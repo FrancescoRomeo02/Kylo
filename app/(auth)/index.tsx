@@ -1,15 +1,16 @@
+import CustomButton from '@/components/ui/CustomButton';
+import FormInput from '@/components/ui/formInput';
+import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { supabase } from '@/lib/supabase';
 import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  ActivityIndicator,
   Alert,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View
 } from 'react-native';
@@ -49,39 +50,36 @@ export default function AuthGate() {
         </Text>
 
         <View style={styles.form}>
-          <Text style={[styles.label, { color: textMuted }]}>Email</Text>
-          <TextInput 
+          <FormInput 
+            label="Email" 
             placeholder="athlete@example.com" 
-            placeholderTextColor={textMuted}
             onChangeText={setEmail} 
-            value={email} 
-            autoCapitalize="none"
-            keyboardType="email-address"
-            style={[styles.input, { backgroundColor: surfaceColor, color: textColor, borderColor: accentColor}]}
-          />
-          
-          <Text style={[styles.label, { color: textMuted }]}>Password</Text>
-          <TextInput 
-            placeholder="Password" 
-            placeholderTextColor={textMuted}
-            secureTextEntry 
-            onChangeText={setPassword} 
-            value={password}
-            style={[styles.input, { backgroundColor: surfaceColor, color: textColor, borderColor: accentColor }]}
+            value={email}
+            textMuted={textMuted}
+            surfaceColor={surfaceColor}
+            textColor={textColor}
+            accentColor={accentColor}
           />
 
-          <TouchableOpacity 
-            style={[styles.buttonPrimary, { backgroundColor: primaryColor }, loading && { opacity: 0.7 }]} 
-            onPress={handleSignIn}
-            disabled={loading}
-          >
-            {loading ? (
-              <ActivityIndicator color="#fff" />
-            ) : (
-              <Text style={styles.buttonText}>Sign Up 
-              </Text>
-            )}
-          </TouchableOpacity>
+          <FormInput 
+            label="Password" 
+            placeholder="La tua password" 
+            onChangeText={setPassword} 
+            value={password}
+            textMuted={textMuted}
+            surfaceColor={surfaceColor}
+            textColor={textColor}
+            accentColor={accentColor}
+            secureTextEntry={true}
+          />
+
+          <CustomButton 
+            onPress={handleSignIn} 
+            loading={loading} 
+            primaryColor={primaryColor}
+            text="Accedi"
+            icon={<IconSymbol name="arrow.right" size={20} color="#fff" />}
+          />
           <Link
             href="/(auth)/signup" 
             asChild

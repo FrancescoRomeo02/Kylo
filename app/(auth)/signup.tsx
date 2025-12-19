@@ -1,19 +1,20 @@
-import { IconSymbol } from '@/components/ui/icon-symbol.ios';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { supabase } from '@/lib/supabase';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  ActivityIndicator,
   Alert,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View
 } from 'react-native';
+
+import CustomButton from '@/components/ui/CustomButton';
+import FormInput from '@/components/ui/formInput';
+import { IconSymbol } from '@/components/ui/icon-symbol';
 
 export default function AuthGate() {
   const [email, setEmail] = useState('');
@@ -52,61 +53,60 @@ export default function AuthGate() {
         </Text>
 
         <View style={styles.form}>
-
-        <TextInput 
-            placeholder="Nome Completo" 
-            placeholderTextColor={textMuted}
+        <FormInput 
+            label="Nome Completo" 
+            placeholder="Jon Doe" 
             onChangeText={setFullName} 
-            value={fullName} 
-            style={[styles.input, { backgroundColor: surfaceColor, color: textColor }]}
+            value={fullName}
+            textMuted={textMuted}
+            surfaceColor={surfaceColor}
+            textColor={textColor}
+            accentColor={primaryColor}
           />
 
-          <TextInput 
-            placeholder="Email" 
-            placeholderTextColor={textMuted}
+          <FormInput 
+            label="Email" 
+            placeholder="jon.doe@example.com" 
             onChangeText={setEmail} 
-            value={email} 
-            autoCapitalize="none"
-            keyboardType="email-address"
-            style={[styles.input, { backgroundColor: surfaceColor, color: textColor }]}
-          />
+            value={email}
+            textMuted={textMuted}
+            surfaceColor={surfaceColor}
+            textColor={textColor}
+            accentColor={primaryColor}
+          />  
           
-          <TextInput 
-            placeholder="Password" 
-            placeholderTextColor={textMuted}
-            secureTextEntry 
+          <FormInput 
+            label="Password" 
+            placeholder="Crea una password sicura" 
             onChangeText={setPassword} 
             value={password}
-            style={[styles.input, { backgroundColor: surfaceColor, color: textColor }]}
+            textMuted={textMuted}
+            surfaceColor={surfaceColor}
+            textColor={textColor}
+            accentColor={primaryColor}
+            secureTextEntry={true}
           />
 
-          <TextInput 
-            placeholder="Conferma Password" 
-            placeholderTextColor={textMuted}
-            secureTextEntry 
+          <FormInput 
+            label="Conferma Password" 
+            placeholder="Reinserisci la tua password" 
             onChangeText={setConfirmPassword} 
             value={confirmPassword}
-            style={[styles.input, { backgroundColor: surfaceColor, color: textColor }]}
+            textMuted={textMuted}
+            surfaceColor={surfaceColor}
+            textColor={textColor}
+            accentColor={primaryColor}
+            secureTextEntry={true}
           />
 
-          <TouchableOpacity 
-            style={[styles.buttonPrimary, { backgroundColor: primaryColor }, loading && { opacity: 0.7 }]} 
-            onPress={handleSignUp}
-            disabled={loading}
-          >
-            {loading ? (
-              <ActivityIndicator color="#fff" />
-            ) : (
-              <View
-                style={{flexDirection: 'row', alignItems: 'center', gap: 8} }
-              >
-              <Text style={styles.buttonText}>
-                Accedi
-              </Text>
-              <IconSymbol name="arrow.right" color={surfaceColor} />
-              </View>
-            )}
-          </TouchableOpacity>
+          <CustomButton 
+            onPress={handleSignUp} 
+            loading={loading} 
+            primaryColor={primaryColor}
+            text="Crea Account"
+            icon={<IconSymbol name="arrow.right" size={20} color="#fff" />}
+          />  
+          
             <TouchableOpacity 
               style={styles.buttonSecondary} 
               disabled={loading}
