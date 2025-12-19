@@ -80,6 +80,7 @@ export default function HomeScreen() {
       <Button
         onPress={async () => {
           await supabase.auth.signOut();
+          alert('Signed out');
         }}
       >
         Sign Out

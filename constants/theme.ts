@@ -14,24 +14,28 @@ const KyloPalette = {
 
 export const Colors = {
   light: {
-    // Mantieni una versione light se vuoi, ma Kylo nasce Dark
     text: '#11181C',
+    textMuted : '#687076',
     background: '#FFFFFF',
     tint: KyloPalette.primary,
     icon: '#687076',
     tabIconDefault: '#687076',
     tabIconSelected: KyloPalette.primary,
-    surface: '#F4F4F5',
+
+    surface: KyloPalette.surface,
+    accent: KyloPalette.accent,
+    error: KyloPalette.error,
+    warning: KyloPalette.warning,
   },
   dark: {
     text: KyloPalette.text,
+    textMuted : KyloPalette.textMuted,
     background: KyloPalette.background,
     tint: KyloPalette.primary,
     icon: KyloPalette.textMuted,
     tabIconDefault: KyloPalette.textMuted,
     tabIconSelected: KyloPalette.primary,
     
-    // Proprietà extra per rispecchiare il tuo Design System
     surface: KyloPalette.surface,
     accent: KyloPalette.accent,
     error: KyloPalette.error,

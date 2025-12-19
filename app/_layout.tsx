@@ -18,13 +18,11 @@ export default function RootLayout() {
   const router = useRouter();
 
   useEffect(() => {
-    // 1. Inizializza la sessione
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setInitialized(true);
     });
 
-    // 2. Ascolta i cambiamenti
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
@@ -41,10 +39,8 @@ export default function RootLayout() {
     const inAuthGroup = segments[0] === '(auth)';
 
     if (!session && !inAuthGroup) {
-      // Se non c'è sessione e non siamo nel gruppo login, vai al login
-      router.replace('/(auth)/login');
+      router.replace('/(auth)');
     } else if (session && inAuthGroup) {
-      // Se siamo loggati ma siamo ancora nel login, vai alla home
       router.replace('/(tabs)');
     }
   }, [session, initialized, segments]);
@@ -52,10 +48,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        {/* Schermi per chi NON è loggato */}
-        <Stack.Screen name="(auth)/login" options={{ title: 'Accedi', headerShown: false }} />
-        
-        {/* Schermi per chi è loggato */}
+        <Stack.Screen name="(auth)" options={{ title: 'Accedi', headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>

@@ -1,5 +1,6 @@
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { supabase } from '@/lib/supabase';
+import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
@@ -22,19 +23,9 @@ export default function AuthGate() {
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const primaryColor = useThemeColor({}, 'tint');
+  const accentColor = useThemeColor({}, 'accent');
   const surfaceColor = useThemeColor({}, 'surface');
-  const textMuted = '#9BA1A6'; // Dal tuo schema Color Palette
-
-  async function handleSignUp() {
-    setLoading(true);
-    const { error } = await supabase.auth.signUp({ 
-      email: email.trim(), 
-      password 
-    });
-    if (error) Alert.alert("Errore", error.message);
-    else Alert.alert('Successo', 'Controlla la tua email!');
-    setLoading(false);
-  }
+  const textMuted = useThemeColor({}, 'textMuted');
 
   async function handleSignIn() {
     setLoading(true);
@@ -58,23 +49,25 @@ export default function AuthGate() {
         </Text>
 
         <View style={styles.form}>
+          <Text style={[styles.label, { color: textMuted }]}>Email</Text>
           <TextInput 
-            placeholder="Email" 
+            placeholder="athlete@example.com" 
             placeholderTextColor={textMuted}
             onChangeText={setEmail} 
             value={email} 
             autoCapitalize="none"
             keyboardType="email-address"
-            style={[styles.input, { backgroundColor: surfaceColor, color: textColor }]}
+            style={[styles.input, { backgroundColor: surfaceColor, color: textColor, borderColor: accentColor}]}
           />
           
+          <Text style={[styles.label, { color: textMuted }]}>Password</Text>
           <TextInput 
             placeholder="Password" 
             placeholderTextColor={textMuted}
             secureTextEntry 
             onChangeText={setPassword} 
             value={password}
-            style={[styles.input, { backgroundColor: surfaceColor, color: textColor }]}
+            style={[styles.input, { backgroundColor: surfaceColor, color: textColor, borderColor: accentColor }]}
           />
 
           <TouchableOpacity 
@@ -85,19 +78,23 @@ export default function AuthGate() {
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={styles.buttonText}>Accedi</Text>
+              <Text style={styles.buttonText}>Sign Up 
+              </Text>
             )}
           </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={styles.buttonSecondary} 
-            onPress={handleSignUp}
-            disabled={loading}
+          <Link
+            href="/(auth)/signup" 
+            asChild
           >
-            <Text style={[styles.buttonText, { color: primaryColor }]}>
-              Crea un nuovo account
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity 
+              style={styles.buttonSecondary} 
+              disabled={loading}
+            >
+              <Text style={[styles.buttonText, { color: primaryColor }]}>
+                Crea un nuovo account
+              </Text>
+            </TouchableOpacity>
+          </Link>
         </View>
       </View>
     </KeyboardAvoidingView>
@@ -115,7 +112,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 48,
-    // Se hai caricato Spline Sans, aggiungi qui: fontFamily: 'SplineSans-Bold',
+    fontFamily: 'SplineSans-Bold',
     fontWeight: '800',
     textAlign: 'center',
     letterSpacing: -1,
@@ -127,7 +124,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   form: {
-    gap: 4,
+    gap: 6,
   },
   input: {
     height: 56,
@@ -135,6 +132,11 @@ const styles = StyleSheet.create({
     borderRadius: 12, // Come da Design System "Surface"
     fontSize: 16,
     marginBottom: 16,
+    borderWidth: 0.7,
+  },
+  label: {
+    fontSize: 14,
+    marginBottom: 4,
   },
   buttonPrimary: {
     height: 56,
