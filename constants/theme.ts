@@ -1,29 +1,41 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
-
 import { Platform } from 'react-native';
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+// Palette estratta dal tuo Design System
+const KyloPalette = {
+  primary: '#7C3AED',    // Primary Purple (Actions, Brand)
+  accent: '#C4B5FD',     // Accent Soft (Highlights)
+  background: '#0F0E17', // Background
+  surface: '#1E1B2E',    // Surface (Cards, Inputs)
+  error: '#EF4444',      // Error
+  warning: '#FBBF24',    // Warning
+  text: '#FFFFFF',       // White Text
+  textMuted: '#9BA1A6',  // Gray Text
+};
 
 export const Colors = {
   light: {
+    // Mantieni una versione light se vuoi, ma Kylo nasce Dark
     text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
+    background: '#FFFFFF',
+    tint: KyloPalette.primary,
     icon: '#687076',
     tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    tabIconSelected: KyloPalette.primary,
+    surface: '#F4F4F5',
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    text: KyloPalette.text,
+    background: KyloPalette.background,
+    tint: KyloPalette.primary,
+    icon: KyloPalette.textMuted,
+    tabIconDefault: KyloPalette.textMuted,
+    tabIconSelected: KyloPalette.primary,
+    
+    // Proprietà extra per rispecchiare il tuo Design System
+    surface: KyloPalette.surface,
+    accent: KyloPalette.accent,
+    error: KyloPalette.error,
+    warning: KyloPalette.warning,
   },
 };
 
