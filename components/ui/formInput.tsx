@@ -1,5 +1,5 @@
 import React from 'react';
-import { KeyboardTypeOptions, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardTypeOptions, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { useThemeColor } from '@/hooks/use-theme-color';
 
@@ -15,6 +15,9 @@ interface FormInputProps {
   secureTextEntry?: boolean;
   keyboardType?: KeyboardTypeOptions;
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
+  footerLabel?: string;
+  errorMessage?: string;
+  successMessage?: string;
 }
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -29,16 +32,23 @@ const FormInput: React.FC<FormInputProps> = ({
   secureTextEntry = false,
   keyboardType,
   autoCapitalize = 'none',
+  footerLabel,
+  errorMessage,
+  successMessage,
 }) => {
   const fallbackMuted = useThemeColor({}, 'textMuted');
   const fallbackSurface = useThemeColor({}, 'surface');
   const fallbackText = useThemeColor({}, 'text');
   const fallbackAccent = useThemeColor({}, 'accent');
+  const errorColor = useThemeColor({}, 'error');
+  const warningColor = useThemeColor({}, 'warning');
 
   const resolvedMuted = textMuted ?? fallbackMuted;
   const resolvedSurface = surfaceColor ?? fallbackSurface;
   const resolvedText = textColor ?? fallbackText;
   const resolvedAccent = accentColor ?? fallbackAccent;
+
+  const borderColor = errorMessage ? errorColor : successMessage ? resolvedAccent : resolvedAccent;
 
   return (
     <View>
@@ -53,9 +63,16 @@ const FormInput: React.FC<FormInputProps> = ({
         secureTextEntry={secureTextEntry}
         style={[
           styles.input,
-          { backgroundColor: resolvedSurface, color: resolvedText, borderColor: resolvedAccent },
+          { backgroundColor: resolvedSurface, color: resolvedText, borderColor },
         ]}
       />
+      {errorMessage ? (
+        <Text style={[styles.validation, { color: errorColor }]}>{errorMessage}</Text>
+      ) : footerLabel ? (
+        <TouchableOpacity onPress={() => { /* Implement forgot password logic here */ }}>
+          <Text style={[styles.footer, { color: resolvedMuted }]}>{footerLabel}</Text>
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
@@ -64,15 +81,28 @@ const styles = StyleSheet.create({
   input: {
     height: 56,
     paddingHorizontal: 16,
-    borderRadius: 12,
+    borderRadius: 22,
     fontSize: 16,
-    marginBottom: 16,
+    marginBottom: 4,
     borderWidth: 0.7,
   },
+
   label: {
     fontSize: 14,
     marginBottom: 4,
   },
-});
 
+  footer: {
+    fontSize: 12,
+    textAlign: 'right',
+    marginTop: 4,
+    marginBottom: 12,
+  },
+
+  validation: {
+    fontSize: 12,
+    marginTop: 4,
+    marginBottom: 12,
+  },
+});
 export default FormInput;

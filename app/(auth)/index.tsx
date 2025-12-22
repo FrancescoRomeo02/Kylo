@@ -1,7 +1,9 @@
 import { ThemedText } from '@/components/themed-text';
+import { ThemedView } from '@/components/themed-view';
 import CustomButton from '@/components/ui/customButton';
 import FormInput from '@/components/ui/formInput';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import LogoWordmark from '@/components/ui/logoWordmark';
 import MessageBanner from '@/components/ui/messageBanner';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { getProfileByUserId } from '@/lib/api/profiles';
@@ -10,12 +12,11 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { Link } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import {
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
+    KeyboardAvoidingView,
+    Platform,
+    StyleSheet,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 
 export default function AuthGate() {
@@ -25,12 +26,22 @@ export default function AuthGate() {
   const [feedback, setFeedback] = useState<{ type: 'error' | 'success'; message: string } | null>(null);
   const { setProfile } = useAuthStore();
 
-  // Recuperiamo i colori definiti nel Design System
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const surfaceColor = useThemeColor({}, 'surface');
   const textMuted = useThemeColor({}, 'textMuted');
   const primaryColor = useThemeColor({}, 'tint');
+
+  // Validazione live
+  const emailError = email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
+    ? 'Email non valida'
+    : '';
+  const passwordError = password && password.length < 6
+    ? 'Minimo 6 caratteri'
+    : '';
+  const passwordSuccess = password && password.length >= 6
+    ? 'Password valida'
+    : '';
 
   const canSubmit = useMemo(() => {
     const emailValid = /.+@.+\..+/.test(email.trim());
@@ -66,19 +77,19 @@ export default function AuthGate() {
   }
 
   return (
-    <KeyboardAvoidingView 
+    <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={[styles.container, { backgroundColor }]}
     >
-      <View style={styles.innerContainer}>
-        <ThemedText type="title">
-          Ben tornato, attleta!
-        </ThemedText>
-        <ThemedText type="defaultSemiBold">
-          Accedi all'allenamento del futuro.
-        </ThemedText>
+      <View style={[styles.decorBubbleTop, { backgroundColor: primaryColor }]} />
+      <View style={[styles.decorBubbleBottom, { backgroundColor: primaryColor }]} />
 
-        <View style={styles.form}>
+      <ThemedView style={styles.content}>
+        <LogoWordmark size={56} align="center" />
+        <ThemedText type="title" style={styles.title}>Ben tornato, atleta!</ThemedText>
+        <ThemedText type="default" style={styles.subtitle}>Accedi all'allenamento del futuro.</ThemedText>
+
+        <ThemedView style={[styles.card, { backgroundColor: surfaceColor }]}>
           {feedback ? (
             <MessageBanner
               message={feedback.message}
@@ -87,47 +98,44 @@ export default function AuthGate() {
             />
           ) : null}
 
-          <FormInput 
-            label="Email" 
-            placeholder="athlete@example.com" 
-            onChangeText={setEmail} 
+          <FormInput
+            label="Email"
+            placeholder="athlete@example.com"
+            onChangeText={setEmail}
             value={email}
             textMuted={textMuted}
             surfaceColor={surfaceColor}
             textColor={textColor}
             keyboardType="email-address"
+            errorMessage={emailError}
           />
 
-          <FormInput 
-            label="Password" 
-            placeholder="La tua password" 
-            onChangeText={setPassword} 
+          <FormInput
+            label="Password"
+            placeholder="La tua password"
+            onChangeText={setPassword}
             value={password}
             secureTextEntry={true}
+            footerLabel="Password dimenticata?"
+            errorMessage={passwordError}
+            successMessage={passwordSuccess}
           />
-
-          <CustomButton 
-            onPress={handleSignIn} 
-            loading={loading} 
+          <CustomButton
+            onPress={handleSignIn}
+            loading={loading}
             text="Accedi"
             disabled={!canSubmit}
             icon={<IconSymbol name="arrow.right" size={20} color="#fff" />}
           />
-          <Link
-            href="/(auth)/signup" 
-            asChild
-          >
-            <TouchableOpacity 
-              style={styles.buttonSecondary} 
-              disabled={loading}
-            >
-              <Text style={[styles.buttonText, { color: primaryColor }]}>
-                Sign up
-              </Text>
+
+          <Link href="/(auth)/signup" asChild>
+            <TouchableOpacity style={styles.linkContainer} disabled={loading}>
+              <ThemedText style={{ color: textMuted }}>Non hai un account?</ThemedText>
+              <ThemedText style={{ color: primaryColor }}>Registrati</ThemedText>
             </TouchableOpacity>
           </Link>
-        </View>
-      </View>
+        </ThemedView>
+      </ThemedView>
     </KeyboardAvoidingView>
   );
 }
@@ -135,25 +143,57 @@ export default function AuthGate() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderColor: 'red',
-    borderWidth: 5,
-  },
-  innerContainer: {
-    flex: 1,
-    padding: 24,
     justifyContent: 'center',
-    borderColor: 'green',
-    borderWidth: 5,
+    padding: 24,
+    overflow: 'hidden',
   },
-  form: {
-    gap: 6,
-  },
-  buttonSecondary: {
-    marginTop: 20,
+  content: {
     alignItems: 'center',
   },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: '700',
-  }
+  title: {
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  subtitle: {
+    marginTop: 4,
+    opacity: 0.85,
+    textAlign: 'center',
+  },
+  card: {
+    width: '100%',
+    marginTop: 24,
+    borderRadius: 24,
+    padding: 20,
+    gap: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+
+  linkContainer: {
+    marginTop: 8,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 4,
+  },
+  decorBubbleTop: {
+    position: 'absolute',
+    top: -120,
+    right: -90,
+    width: 220,
+    height: 220,
+    borderRadius: 220,
+    opacity: 0.14,
+  },
+  decorBubbleBottom: {
+    position: 'absolute',
+    bottom: -140,
+    left: -100,
+    width: 260,
+    height: 260,
+    borderRadius: 260,
+    opacity: 0.1,
+  },
 });

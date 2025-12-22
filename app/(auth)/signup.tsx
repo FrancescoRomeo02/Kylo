@@ -1,22 +1,23 @@
-import MessageBanner from '@/components/ui/messageBanner';
-import { useThemeColor } from '@/hooks/use-theme-color';
-import { supabase } from '@/lib/supabase';
-import { router } from 'expo-router';
-import React, { useMemo, useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
-
+import { ThemedText } from '@/components/themed-text';
+import { ThemedView } from '@/components/themed-view';
 import CustomButton from '@/components/ui/customButton';
 import FormInput from '@/components/ui/formInput';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import LogoWordmark from '@/components/ui/logoWordmark';
+import MessageBanner from '@/components/ui/messageBanner';
+import { useThemeColor } from '@/hooks/use-theme-color';
 import { upsertProfile } from '@/lib/api/profiles';
+import { supabase } from '@/lib/supabase';
 import { useAuthStore } from '@/store/useAuthStore';
+import { router } from 'expo-router';
+import React, { useMemo, useState } from 'react';
+import {
+    KeyboardAvoidingView,
+    Platform,
+    StyleSheet,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 
 export default function AuthGate() {
   const [email, setEmail] = useState('');
@@ -27,12 +28,40 @@ export default function AuthGate() {
   const [feedback, setFeedback] = useState<{ type: 'error' | 'success'; message: string } | null>(null);
   const { setProfile } = useAuthStore();
 
-  // Recuperiamo i colori definiti nel Design System
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const primaryColor = useThemeColor({}, 'tint');
   const surfaceColor = useThemeColor({}, 'surface');
   const textMuted = useThemeColor({}, 'textMuted');
+
+  // Validazione live
+  const fullNameError = fullName.trim() && fullName.trim().length < 2
+    ? 'Inserisci almeno 2 caratteri'
+    : '';
+  const fullNameSuccess = fullName.trim().length >= 2
+    ? 'Nome valido'
+    : '';
+
+  const emailError = email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
+    ? 'Email non valida'
+    : '';
+  const emailSuccess = email.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
+    ? 'Email valida'
+    : '';
+
+  const passwordError = password && password.length < 8
+    ? 'Minimo 8 caratteri'
+    : '';
+  const passwordSuccess = password && password.length >= 8
+    ? 'Password valida'
+    : '';
+
+  const passwordMatchError = confirmPassword && password !== confirmPassword
+    ? 'Le password non coincidono'
+    : '';
+  const passwordMatchSuccess = confirmPassword && password === confirmPassword && password.length >= 8
+    ? 'Password corrette'
+    : '';
 
   const canSubmit = useMemo(() => {
     const emailValid = /.+@.+\..+/.test(email.trim());
@@ -92,87 +121,99 @@ export default function AuthGate() {
   }
 
   return (
-    <KeyboardAvoidingView 
+    <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={[styles.container, { backgroundColor }]}
     >
-      <View style={styles.innerContainer}>
-        <Text style={[styles.title, { color: primaryColor }]}>Kylo</Text>
-        <Text style={[styles.subtitle, { color: textMuted }]}>
-          Crea un nuovo account per iniziare il tuo viaggio con Kylo
-        </Text>
+      <View style={[styles.decorBubbleTop, { backgroundColor: primaryColor }]} />
+      <View style={[styles.decorBubbleBottom, { backgroundColor: primaryColor }]} />
 
-        <View style={styles.form}>
-        {feedback ? (
-          <MessageBanner
-            message={feedback.message}
-            type={feedback.type}
-            onClose={() => setFeedback(null)}
-          />
-        ) : null}
+      <ThemedView style={styles.content}>
+        <LogoWordmark size={56} align="center" />
+        <ThemedText type="title" style={styles.title}>Crea il tuo account</ThemedText>
+        <ThemedText type="default" style={styles.subtitle}>Unisciti a Kylo e inizia ora.</ThemedText>
 
-        <FormInput 
-            label="Nome Completo" 
-            placeholder="Jon Doe" 
-            onChangeText={setFullName} 
+        <ThemedView style={[styles.card, { backgroundColor: surfaceColor }]}>
+          {feedback ? (
+            <MessageBanner
+              message={feedback.message}
+              type={feedback.type}
+              onClose={() => setFeedback(null)}
+            />
+          ) : null}
+
+          <FormInput
+            label="Nome Completo"
+            placeholder="John Doe"
+            onChangeText={setFullName}
             value={fullName}
             autoCapitalize="words"
             textMuted={textMuted}
             surfaceColor={surfaceColor}
             textColor={textColor}
             accentColor={primaryColor}
+            errorMessage={fullNameError}
+            successMessage={fullNameSuccess}
           />
 
-          <FormInput 
-            label="Email" 
-            placeholder="jon.doe@example.com" 
-            onChangeText={setEmail} 
+          <FormInput
+            label="Email"
+            placeholder="john.doe@example.com"
+            onChangeText={setEmail}
             value={email}
             textMuted={textMuted}
             surfaceColor={surfaceColor}
             textColor={textColor}
             keyboardType="email-address"
-          />  
-          
-          <FormInput 
-            label="Password" 
-            placeholder="Crea una password sicura" 
-            onChangeText={setPassword} 
+            errorMessage={emailError}
+            successMessage={emailSuccess}
+          />
+
+          <FormInput
+            label="Password"
+            placeholder="Crea una password sicura"
+            onChangeText={setPassword}
             value={password}
             textMuted={textMuted}
             surfaceColor={surfaceColor}
             textColor={textColor}
             accentColor={primaryColor}
             secureTextEntry={true}
+            errorMessage={passwordError}
+            successMessage={passwordSuccess}
           />
 
-          <FormInput 
-            label="Conferma Password" 
-            placeholder="Reinserisci la tua password" 
-            onChangeText={setConfirmPassword} 
+          <FormInput
+            label="Conferma Password"
+            placeholder="Reinserisci la tua password"
+            onChangeText={setConfirmPassword}
             value={confirmPassword}
+            textMuted={textMuted}
+            surfaceColor={surfaceColor}
+            textColor={textColor}
             secureTextEntry={true}
+            errorMessage={passwordMatchError}
+            successMessage={passwordMatchSuccess}
           />
 
-          <CustomButton 
-            onPress={handleSignUp} 
-            loading={loading} 
+          <CustomButton
+            onPress={handleSignUp}
+            loading={loading}
             text="Crea Account"
             disabled={!canSubmit}
             icon={<IconSymbol name="arrow.right" size={20} color="#fff" />}
-          />  
-          
-            <TouchableOpacity 
-              style={styles.buttonSecondary} 
-              disabled={loading}
-              onPress={() => router.back()}
-            >
-              <Text style={[styles.buttonText, { color: primaryColor }]}>
-                Torna al login
-              </Text>
-            </TouchableOpacity>
-        </View>
-      </View>
+          />
+
+          <TouchableOpacity
+            style={styles.linkContainer}
+            disabled={loading}
+            onPress={() => router.back()}
+          >
+            <ThemedText style={{ color: textMuted }}>Hai già un account?</ThemedText>
+            <ThemedText style={{ color: primaryColor }}>Accedi</ThemedText>
+          </TouchableOpacity>
+        </ThemedView>
+      </ThemedView>
     </KeyboardAvoidingView>
   );
 }
@@ -180,33 +221,56 @@ export default function AuthGate() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  innerContainer: {
-    flex: 1,
-    padding: 24,
     justifyContent: 'center',
+    padding: 24,
+    overflow: 'hidden',
   },
-  title: {
-    fontSize: 48,
-    fontWeight: '800',
-    textAlign: 'center',
-    letterSpacing: -1,
-  },
-  subtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 40,
-    marginTop: 8,
-  },
-  form: {
-    gap: 4,
-  },
-  buttonSecondary: {
-    marginTop: 20,
+  content: {
     alignItems: 'center',
   },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: '700',
-  }
+  title: {
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  subtitle: {
+    marginTop: 4,
+    opacity: 0.85,
+    textAlign: 'center',
+  },
+  card: {
+    width: '100%',
+    marginTop: 24,
+    borderRadius: 24,
+    padding: 20,
+    gap: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  linkContainer: {
+    marginTop: 8,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 4,
+  },
+  decorBubbleTop: {
+    position: 'absolute',
+    top: -120,
+    right: -90,
+    width: 220,
+    height: 220,
+    borderRadius: 220,
+    opacity: 0.14,
+  },
+  decorBubbleBottom: {
+    position: 'absolute',
+    bottom: -140,
+    left: -100,
+    width: 260,
+    height: 260,
+    borderRadius: 260,
+    opacity: 0.1,
+  },
 });

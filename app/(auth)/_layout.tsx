@@ -5,22 +5,11 @@ export default function AuthLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: false, // Disattiva l'header per tutte le pagine di default
+        headerShown: false,
       }}
     >
-      <Stack.Screen name="index" /> 
-      
-      {/* Riattiva l'header solo per la registrazione perché è una modal */}
-      <Stack.Screen 
-        name="signup" 
-        options={{ 
-          presentation: 'modal',
-          headerShown: true, 
-          headerTitle: 'Crea Account',
-          headerStyle: { backgroundColor: '#0F0E17' }, // Usa il tuo Background
-          headerTintColor: '#7C3AED', // Usa il tuo Primary
-        }} 
-      />
+      <Stack.Screen name="index" />
+      <Stack.Screen name="signup" />
     </Stack>
   );
 }

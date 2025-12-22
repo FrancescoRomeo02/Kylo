@@ -61,7 +61,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
                 styles.CustomButtonPrimary,
                 { backgroundColor, borderColor, shadowColor },
                 variant === 'ghost' && styles.Ghost,
-                isDisabled && { opacity: 0.55 },
+                isDisabled && styles.Disabled,
             ]}
             onPress={onPress}
             disabled={isDisabled}
@@ -106,6 +106,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 8,
+    },
+    Disabled: {
+        backgroundColor: '#0F0E17',
+        shadowOpacity: 0,
+        elevation: 0,
+        opacity: 0.6,
     },
 });
 
