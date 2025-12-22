@@ -38,32 +38,30 @@ const styles = StyleSheet.create({
   default: {
     fontSize: 16,
     lineHeight: 24,
-    fontFamily: 'SplineSans-Regular',
   },
   defaultSemiBold: {
     fontSize: 16,
     lineHeight: 24,
-    fontFamily: 'SplineSans-SemiBold',
+    fontWeight: '600',
   },
   title: {
     fontSize: 32,
-    fontFamily: 'SplineSans-Bold',
+    fontWeight: '800',
     lineHeight: 32,
   },
   subtitle: {
     fontSize: 22,
-    fontFamily: 'SplineSans-SemiBold',
+    fontWeight: '600',
     lineHeight: 28,
   },
   caption: {
     fontSize: 12,
     lineHeight: 18,
-    fontFamily: 'SplineSans-Light',
+    fontWeight: '400',
   },
   link: {
     lineHeight: 30,
     fontSize: 16,
-    fontFamily: 'SplineSans-Medium',
     color: '#0a7ea4',
   },
 });

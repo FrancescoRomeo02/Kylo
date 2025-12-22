@@ -188,7 +188,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 48,
-    fontFamily: 'SplineSans-Bold',
     fontWeight: '800',
     textAlign: 'center',
     letterSpacing: -1,
