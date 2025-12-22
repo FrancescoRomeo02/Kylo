@@ -1,3 +1,4 @@
+import { ThemedText } from '@/components/themed-text';
 import CustomButton from '@/components/ui/customButton';
 import FormInput from '@/components/ui/formInput';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -9,12 +10,12 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { Link } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import {
-    KeyboardAvoidingView,
-    Platform,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 
 export default function AuthGate() {
@@ -70,10 +71,12 @@ export default function AuthGate() {
       style={[styles.container, { backgroundColor }]}
     >
       <View style={styles.innerContainer}>
-        <Text style={[styles.title, { color: primaryColor }]}>Kylo</Text>
-        <Text style={[styles.subtitle, { color: textMuted }]}>
-          Benvenuto nell'allenamento del futuro
-        </Text>
+        <ThemedText type="title">
+          Ben tornato, attleta!
+        </ThemedText>
+        <ThemedText type="defaultSemiBold">
+          Accedi all'allenamento del futuro.
+        </ThemedText>
 
         <View style={styles.form}>
           {feedback ? (
@@ -132,24 +135,15 @@ export default function AuthGate() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    borderColor: 'red',
+    borderWidth: 5,
   },
   innerContainer: {
     flex: 1,
     padding: 24,
     justifyContent: 'center',
-  },
-  title: {
-    fontSize: 48,
-    fontFamily: 'SplineSans-Bold',
-    fontWeight: '800',
-    textAlign: 'center',
-    letterSpacing: -1,
-  },
-  subtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 40,
-    marginTop: 8,
+    borderColor: 'green',
+    borderWidth: 5,
   },
   form: {
     gap: 6,

@@ -4,12 +4,12 @@ import { supabase } from '@/lib/supabase';
 import { router } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import {
-    KeyboardAvoidingView,
-    Platform,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 
 import CustomButton from '@/components/ui/customButton';
@@ -81,6 +81,7 @@ export default function AuthGate() {
         id: data.user.id,
         full_name: fullName.trim(),
         email: emailTrimmed,
+        username: emailTrimmed.split('@')[0],
       });
       setProfile(upserted);
     }
