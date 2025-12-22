@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-import CustomButton from '@/components/ui/CustomButton';
+import CustomButton from '@/components/ui/customButton';
 import FormInput from '@/components/ui/formInput';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 

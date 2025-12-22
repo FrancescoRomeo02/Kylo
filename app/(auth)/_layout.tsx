@@ -8,7 +8,7 @@ export default function AuthLayout() {
         headerShown: false, // Disattiva l'header per tutte le pagine di default
       }}
     >
-      <Stack.Screen name="login" /> 
+      <Stack.Screen name="index" /> 
       
       {/* Riattiva l'header solo per la registrazione perché è una modal */}
       <Stack.Screen 

@@ -1,4 +1,4 @@
-import CustomButton from '@/components/ui/CustomButton';
+import CustomButton from '@/components/ui/customButton';
 import FormInput from '@/components/ui/formInput';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeColor } from '@/hooks/use-theme-color';
@@ -89,7 +89,7 @@ export default function AuthGate() {
               disabled={loading}
             >
               <Text style={[styles.buttonText, { color: primaryColor }]}>
-                Crea un nuovo account
+                Sign up
               </Text>
             </TouchableOpacity>
           </Link>
@@ -123,31 +123,6 @@ const styles = StyleSheet.create({
   },
   form: {
     gap: 6,
-  },
-  input: {
-    height: 56,
-    paddingHorizontal: 16,
-    borderRadius: 12, // Come da Design System "Surface"
-    fontSize: 16,
-    marginBottom: 16,
-    borderWidth: 0.7,
-  },
-  label: {
-    fontSize: 14,
-    marginBottom: 4,
-  },
-  buttonPrimary: {
-    height: 56,
-    borderRadius: 99, // Bottoni a pillola come nel design
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 8,
-    // Aggiungiamo un leggero effetto ombra/glow tipico del tuo stile
-    shadowColor: '#7C3AED',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 5,
   },
   buttonSecondary: {
     marginTop: 20,

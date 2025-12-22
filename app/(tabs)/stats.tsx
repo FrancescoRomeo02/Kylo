@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
-export default function HomeScreen() {
+export default function StatsScreen() {
   // Recuperiamo le dimensioni della "zona sicura" (es. altezza della notch)
   const insets = useSafeAreaInsets();
 
@@ -12,7 +12,7 @@ export default function HomeScreen() {
     <ThemedView style={styles.container}>
       {/* TOP BAR: Il padding superiore è dinamico in base al dispositivo */}
       <View style={[styles.topBar, { paddingTop: insets.top + 10 }]}>
-        <ThemedText type="subtitle" style={styles.topBarTitle}>Home App</ThemedText>
+        <ThemedText type="subtitle" style={styles.topBarTitle}>Le tue Statistiche</ThemedText>
       </View>
 
       {/* MAIN BLOCK: Occupa tutto lo spazio rimanente */}
