@@ -8,3 +8,24 @@ export interface Profile {
   email?: string | null;
 }
 
+export interface Diet {
+  id: string;
+  target_calories: number;
+  target_protein?: number | null;
+  target_carbs?: number | null;
+  target_fat?: number | null;
+  effective_from?: string | null;
+  last_update?: string | null;
+}
+
+export interface foodEntry {
+  id: string;
+  user_id?: string | null;
+  food_name: string;
+  calories: number;
+  protein?: number | null;
+  carbs?: number | null;
+  fat?: number | null;
+  meal_type?: 'colazione' | 'pranzo' | 'cena' | 'spuntino' | null;
+  logged_at?: string | null;
+}

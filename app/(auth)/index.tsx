@@ -12,11 +12,10 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { Link } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import {
-    KeyboardAvoidingView,
-    Platform,
-    StyleSheet,
-    TouchableOpacity,
-    View,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  TouchableOpacity
 } from 'react-native';
 
 export default function AuthGate() {
@@ -81,8 +80,6 @@ export default function AuthGate() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={[styles.container, { backgroundColor }]}
     >
-      <View style={[styles.decorBubbleTop, { backgroundColor: primaryColor }]} />
-      <View style={[styles.decorBubbleBottom, { backgroundColor: primaryColor }]} />
 
       <ThemedView style={styles.content}>
         <LogoWordmark size={56} align="center" />
@@ -177,23 +174,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     gap: 4,
-  },
-  decorBubbleTop: {
-    position: 'absolute',
-    top: -120,
-    right: -90,
-    width: 220,
-    height: 220,
-    borderRadius: 220,
-    opacity: 0.14,
-  },
-  decorBubbleBottom: {
-    position: 'absolute',
-    bottom: -140,
-    left: -100,
-    width: 260,
-    height: 260,
-    borderRadius: 260,
-    opacity: 0.1,
   },
 });
