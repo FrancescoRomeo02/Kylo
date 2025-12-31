@@ -9,6 +9,8 @@ import { getProfileByUserId } from '@/lib/api/profiles';
 import { supabase } from '@/lib/supabase';
 import { useAuthStore } from '@/store/useAuthStore';
 
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 export default function RootLayout() {
 
   const colorScheme = useColorScheme();
@@ -50,7 +52,6 @@ export default function RootLayout() {
   useEffect(() => {
     if (!initialized) return;
 
-    // Logica di reindirizzamento
     const inAuthGroup = segments[0] === '(auth)';
 
     if (!session && !inAuthGroup) {
@@ -61,12 +62,23 @@ export default function RootLayout() {
   }, [session, initialized, segments]);
 
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheetModalProvider>
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(auth)" options={{ title: 'Accedi', headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="SearchFood"
+          options={{
+            presentation: 'modal',
+            headerShown: false,
+          }}
+        />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>
+    </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }

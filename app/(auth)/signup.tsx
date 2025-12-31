@@ -12,11 +12,11 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { router } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import {
-    KeyboardAvoidingView,
-    Platform,
-    StyleSheet,
-    TouchableOpacity,
-    View,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 export default function AuthGate() {
@@ -34,7 +34,6 @@ export default function AuthGate() {
   const surfaceColor = useThemeColor({}, 'surface');
   const textMuted = useThemeColor({}, 'textMuted');
 
-  // Validazione live
   const fullNameError = fullName.trim() && fullName.trim().length < 2
     ? 'Inserisci almeno 2 caratteri'
     : '';
@@ -104,7 +103,6 @@ export default function AuthGate() {
       return;
     }
 
-    // Create or update the profile row in 'profiles' table for this user
     if (data?.user) {
       const upserted = await upsertProfile({
         id: data.user.id,

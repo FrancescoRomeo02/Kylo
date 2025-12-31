@@ -4,7 +4,6 @@ import { supabase } from '@/lib/supabase';
 import { Button } from '@react-navigation/elements';
 
 
-// per ora solo un bottone per il logout
 export default function ProfileScreen() {
   return (
     <TabScreen title="Il tuo Profilo">

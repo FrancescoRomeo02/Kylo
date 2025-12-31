@@ -8,7 +8,6 @@ type LogoWordmarkProps = {
   align?: 'left' | 'center';
 };
 
-// Simple, dependency-free logo-like wordmark with a soft glow and underline accent
 const LogoWordmark: React.FC<LogoWordmarkProps> = ({ size = 52, align = 'center' }) => {
   const textColor = useThemeColor({}, 'text');
   const primary = useThemeColor({}, 'tint');
@@ -44,7 +43,6 @@ const styles = StyleSheet.create({
   wordmark: {
     fontWeight: '900',
     letterSpacing: 1,
-    // soft glow
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 16,
   },

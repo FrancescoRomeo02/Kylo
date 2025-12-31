@@ -31,7 +31,6 @@ export default function AuthGate() {
   const textMuted = useThemeColor({}, 'textMuted');
   const primaryColor = useThemeColor({}, 'tint');
 
-  // Validazione live
   const emailError = email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
     ? 'Email non valida'
     : '';

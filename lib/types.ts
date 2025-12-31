@@ -13,7 +13,7 @@ export interface Diet {
   target_calories: number;
   target_protein?: number | null;
   target_carbs?: number | null;
-  target_fat?: number | null;
+  target_fats?: number | null;
   effective_from?: string | null;
   last_update?: string | null;
 }
@@ -28,4 +28,10 @@ export interface foodEntry {
   fat?: number | null;
   meal_type?: 'colazione' | 'pranzo' | 'cena' | 'spuntino' | null;
   logged_at?: string | null;
+}
+
+export interface foodLogs {
+  food_name: string;
+  meal_type: 'colazione' | 'pranzo' | 'cena' | 'spuntino';
+  amount: number;
 }

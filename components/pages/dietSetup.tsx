@@ -9,8 +9,6 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
-
-// Preset di macro per ogni tipo di dieta
 const DIET_PRESETS = {
   'Balanced': { protein: 30, carbs: 45, fats: 25 },
   'High Protein': { protein: 40, carbs: 35, fats: 25 },
@@ -225,7 +223,6 @@ function DietSetup({ onSave }: { onSave: (data: any) => void }) {
           </ThemedText>
           </View>
         </View>
-        // progresbarr colorata che mostra la somma delle macro
         <View style={{ height: 18, flexDirection: 'row', width: '100%', marginTop: 8, borderRadius: 6, overflow: 'hidden' }}>
           <View style={{ flex: protein, backgroundColor: macroColors.protein }} />
           <View style={{ flex: carbs, backgroundColor: macroColors.carbs }} />
