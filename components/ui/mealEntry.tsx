@@ -102,29 +102,38 @@ const MealEntry = ({ meal, onUpdateItem }: MealEntryProps) => {
           </ThemedText>
         </TouchableOpacity>
       ) : (
-        meal.items.map((item, index) => (
-          <View key={item.id || `${item.name}-${index}`} style={styles.card}>
-            <View style={styles.iconContainer}>
-              <IconSymbol name={itemIcon(item)} size={24} color={colors.accent}/>
-            </View>
+        <>
+          {meal.items.map((item, index) => (
+            <View key={item.id || `${item.name}-${index}`} style={styles.card}>
+              <View style={styles.iconContainer}>
+                <IconSymbol name={itemIcon(item)} size={24} color={colors.accent}/>
+              </View>
 
-            <View style={styles.textContainer}>
-              <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
-              <ThemedText type="caption" style={{ color: colors.textMuted }}>
-                 {item.quantity ? item.quantity + ' • ' : ''}{item.calories} kcal
-              </ThemedText>
-            </View>
+              <View style={styles.textContainer}>
+                <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
+                <ThemedText type="caption" style={{ color: colors.textMuted }}>
+                   {item.quantity ? item.quantity + ' • ' : ''}{item.calories} kcal
+                </ThemedText>
+              </View>
 
-            {/* Bottone Modifica/Info */}
-            <TouchableOpacity 
-              style={styles.smallAddButton}
-              onPress={() => handlePresentModalPress(item)}
-            >
-              {/* Cambiato icona in "pencil" o "slider" per indicare modifica */}
-              <IconSymbol name="slider.horizontal.3" size={24} color={colors.textMuted} />
-            </TouchableOpacity>
-          </View>
-        ))
+              {/* Bottone Modifica/Info */}
+              <TouchableOpacity 
+                style={styles.smallAddButton}
+                onPress={() => handlePresentModalPress(item)}
+              >
+                <IconSymbol name="slider.horizontal.3" size={24} color={colors.textMuted} />
+              </TouchableOpacity>
+            </View>
+          ))}
+          
+          {/* Bottone per aggiungere altri items */}
+          <TouchableOpacity
+            style={styles.addMoreButton}
+            onPress={() => router.push({ pathname: '/searchFood', params: { mealType: meal.name, userId: profile?.id || '' } })}
+          >
+            <IconSymbol name="plus.circle.fill" size={24} color={colors.textMuted} />
+          </TouchableOpacity>
+        </>
       )}
 
       {/* === BOTTOM SHEET === */}
@@ -222,6 +231,7 @@ const styles = StyleSheet.create({
   textContainer: { flex: 1 },
   smallAddButton: { padding: 4, opacity: 0.7 },
   emptyStateContainer: { height: 100, borderRadius: 16, borderWidth: 2, borderColor: Colors.dark.surface, borderStyle: 'dashed', justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' },
+  addMoreButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: Colors.dark.surface, borderRadius: 12, padding: 12, marginTop: 8, gap: 8, opacity: 0.8 },
   
   sheetContent: {
     flex: 1,

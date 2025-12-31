@@ -60,8 +60,8 @@ function DietView({ diet }: { diet: Diet }) {
 
   const styles = useMemo(() => StyleSheet.create({
     container: {
-      paddingHorizontal: 16,
-      paddingVertical: 20,
+      paddingHorizontal: 8,
+      paddingVertical: 10,
     },
     header: {
       fontSize: 24,
@@ -175,7 +175,7 @@ function DietView({ diet }: { diet: Diet }) {
               </Pressable>
             );
           })}
-        </ScrollView>);
+        </ScrollView>
 
           {/* Selected date label */}
           <ThemedText style={{ fontSize: 14, color: colors.text, marginBottom: 12, textAlign: 'center' }}>
