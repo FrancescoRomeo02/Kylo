@@ -84,6 +84,7 @@ function DietView({ diet }: { diet: Diet }) {
     },
     dateButtonActive: {
       backgroundColor: tintColor,
+      color: colors.background,
     },
     dateButtonText: {
       color: colors.text,
