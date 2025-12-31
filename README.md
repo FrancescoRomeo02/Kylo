@@ -1,50 +1,139 @@
-# Welcome to your Expo app 👋
+# Kylo - Nutrition Tracking App 🍎
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Kylo is a modern, elegant nutrition tracking application built with React Native and Expo. Designed for athletes and fitness enthusiasts, it provides comprehensive macro tracking, personalized diet planning, and an intuitive food logging experience.
 
-## Get started
+## Features ✨
 
-1. Install dependencies
+- **🔐 Authentication**: Secure user authentication powered by Supabase Auth
+- **📊 Macro Tracking**: Real-time tracking of calories, proteins, carbs, and fats
+- **🎯 Custom Diet Plans**: Personalized diet targets with preset options (Balanced, High Protein, Keto, Low Carb)
+- **📅 Daily Nutrition View**: Visual progress tracking with macro circles and calorie goals
+- **🍽️ Meal Management**: Organize foods by meal type (Breakfast, Lunch, Dinner, Snacks)
+- **🔍 Food Search**: Quick food search and multi-select for easy logging
+- **🎨 Dark Mode**: Beautiful dark theme with purple accent colors
+- **💾 Data Persistence**: All data securely stored in Supabase
 
+## Tech Stack 🛠️
+
+- **Framework**: [Expo](https://expo.dev) / React Native
+- **Language**: TypeScript
+- **Navigation**: Expo Router (file-based routing)
+- **Backend**: [Supabase](https://supabase.com) (PostgreSQL + Auth)
+- **State Management**: Zustand
+- **UI Components**: Custom components with Expo icons
+- **Styling**: React Native StyleSheet with consistent theme system
+
+## Project Structure 📁
+
+```
+kylo/
+├── app/                    # File-based routing
+│   ├── (auth)/            # Authentication screens
+│   ├── (tabs)/            # Main app tabs
+│   └── searchFood.tsx     # Food search modal
+├── components/
+│   ├── pages/             # Page-level components
+│   └── ui/                # Reusable UI components
+├── lib/
+│   ├── api/               # API layer (Supabase queries)
+│   ├── supabase.ts        # Supabase client
+│   └── types.ts           # TypeScript type definitions
+├── store/                 # Zustand state management
+├── constants/             # Theme and constants
+└── hooks/                 # Custom React hooks
+```
+
+## Getting Started 🚀
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+- Expo Go app (for mobile testing) or iOS Simulator / Android Emulator
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd kylo
+   ```
+
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. Start the app
+3. **Configure environment variables**
+   
+   Copy `.env.example` to `.env` and fill in your Supabase credentials:
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Edit `.env`:
+   ```
+   EXPO_PUBLIC_SUPABASE_URL=your_supabase_project_url
+   EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
 
+4. **Start the development server**
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+5. **Run on your preferred platform**
+   - Press `i` for iOS simulator
+   - Press `a` for Android emulator
+   - Scan QR code with Expo Go app for physical device
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Database Schema 🗄️
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Tables
 
-## Get a fresh project
+- **profiles**: User profile information
+- **diet_targets**: Personalized diet goals and macro targets
+- **food_logs**: Individual food entries with nutritional data
 
-When you're ready, run:
+## Development Scripts 📝
 
-```bash
-npm run reset-project
-```
+- `npm start` - Start Expo development server
+- `npm run android` - Run on Android
+- `npm run ios` - Run on iOS
+- `npm run web` - Run on web
+- `npm run reset-project` - Reset to blank slate
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Code Quality ✅
 
-## Learn more
+This project follows best practices:
+- ✅ TypeScript strict mode enabled
+- ✅ Consistent error handling across API layer
+- ✅ Proper type safety (no `any` types)
+- ✅ Performance optimizations (memoization, proper keys)
+- ✅ Error boundaries for crash protection
+- ✅ Centralized theme system
 
-To learn more about developing your project with Expo, look at the following resources:
+## Environment Variables 🔑
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Required environment variables (see `.env.example`):
+- `EXPO_PUBLIC_SUPABASE_URL` - Your Supabase project URL
+- `EXPO_PUBLIC_SUPABASE_ANON_KEY` - Your Supabase anonymous key
 
-## Join the community
+> **Note**: Never commit `.env` file to version control. It's already in `.gitignore`.
 
-Join our community of developers creating universal apps.
+## Contributing 🤝
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project is under active development. Contributions, issues, and feature requests are welcome!
+
+## License 📄
+
+[Add your license here]
+
+## Contact 📧
+
+[Add contact information]
+
+---
+
+Built with ❤️ using Expo and React Native
+

@@ -1,12 +1,13 @@
+import { Profile } from '@/lib/types';
 import { Session } from '@supabase/supabase-js';
 import { create } from 'zustand';
 
 interface AuthState {
   session: Session | null;
-  profile: any | null;
+  profile: Profile | null;
   initialized: boolean;
   setSession: (session: Session | null) => void;
-  setProfile: (profile: any | null) => void;
+  setProfile: (profile: Profile | null) => void;
   setInitialized: (val: boolean) => void;
 }
 

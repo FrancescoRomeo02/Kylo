@@ -157,11 +157,12 @@ function DietSetup({ onSave }: { onSave: (data: any) => void }) {
       alert('The sum of macros must equal 100%. Please adjust the sliders.');
       return;
     }
+    const totalCalories = parseInt(dailyTarget);
     onSave({
-        target_calories: parseInt(dailyTarget),
-        target_protein: parseInt((protein*parseInt(dailyTarget)/400).toString()),
-        target_carbs: parseInt((carbs*parseInt(dailyTarget)/400).toString()),
-        target_fat: parseInt((fats*parseInt(dailyTarget)/900).toString()),
+        target_calories: totalCalories,
+        target_protein: Math.round((protein / 100) * totalCalories / 4),
+        target_carbs: Math.round((carbs / 100) * totalCalories / 4),
+        target_fats: Math.round((fats / 100) * totalCalories / 9),
     });
   };
 

@@ -18,7 +18,7 @@ export interface Diet {
   last_update?: string | null;
 }
 
-export interface foodEntry {
+export interface FoodEntry {
   id: string;
   user_id?: string | null;
   food_name: string;
@@ -30,7 +30,7 @@ export interface foodEntry {
   logged_at?: string | null;
 }
 
-export interface foodLogs {
+export interface FoodLog {
   food_name: string;
   meal_type: 'colazione' | 'pranzo' | 'cena' | 'spuntino';
   amount: number;

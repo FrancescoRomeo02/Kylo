@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/theme';
 import { insertFoodLog } from '@/lib/api/foodLogs';
 import { Ionicons } from '@expo/vector-icons';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
@@ -5,18 +6,16 @@ import React, { useState } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from '../components/themed-text';
 
+interface FoodItem {
+  id: string;
+  name: string;
+  cal: number;
+  p: number;
+  c: number;
+  f: number;
+}
 
-const KyloPalette = {
-  primary: '#7C3AED',
-  background: '#0F0E17',
-  surface: '#1E1B2E',
-  inputBackground: '#2A273F',
-  text: '#FFFFFF',
-  textMuted: '#9BA1A6',
-  accent: '#C4B5FD',
-};
-
-const MOCK_DB = [
+const MOCK_DB: FoodItem[] = [
   { id: '1', name: 'Banana', cal: 89, p: 1.1, c: 22, f: 0.3 },
   { id: '2', name: 'Petto di Pollo', cal: 165, p: 31, c: 0, f: 3.6 },
   { id: '3', name: 'Riso Basmati', cal: 130, p: 2.7, c: 28, f: 0.3 },
@@ -30,15 +29,15 @@ const SearchFoodScreen = () => {
   const params = useLocalSearchParams();
   const mealType = (params.mealType as string) || 'Spuntino';
   const userId = params.userId as string || '';
-
+  const colors = Colors.dark;
   const [query, setQuery] = useState('');
-  const [cart, setCart] = useState<any[]>([]); 
+  const [cart, setCart] = useState<FoodItem[]>([]); 
 
   const results = query.length > 0 
     ? MOCK_DB.filter(f => f.name.toLowerCase().includes(query.toLowerCase()))
     : [];
 
-  const toggleItem = (item: any) => {
+  const toggleItem = (item: FoodItem) => {
     const exists = cart.find(i => i.id === item.id);
     if (exists) {
       setCart(cart.filter(i => i.id !== item.id));
@@ -47,35 +46,37 @@ const SearchFoodScreen = () => {
     }
   };
 
-  const handleDone = () => {
-    cart.forEach(async (food) => {
-      try {
-        await insertFoodLog({
+  const handleDone = async () => {
+    try {
+      await Promise.all(
+        cart.map((food) =>
+          insertFoodLog({
             user_id: userId,
             food_name: food.name,
             meal_type: mealType.toLowerCase() as 'colazione' | 'pranzo' | 'cena' | 'spuntino',
-            amount: 100, // Quantità fissa per esempio
-        });
-      } catch (error) {
-        console.error('Errore durante l\'inserimento del log alimentare:', error);
-      }
-    });
-    router.push('/(tabs)/diet');
+            amount: 100,
+          })
+        )
+      );
+      router.push('/(tabs)/diet');
+    } catch (error) {
+      // Handle error - could show toast/alert to user
+    }
   };
 
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: KyloPalette.background }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       
         {/* 1. HEADER CUSTOM */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.push('/(tabs)/diet')} style={{ padding: 8 }}>
-            <ThemedText type="link" style={{ color: KyloPalette.textMuted }}>Annulla</ThemedText>
+            <ThemedText type="link" style={{ color: colors.textMuted }}>Annulla</ThemedText>
           </TouchableOpacity>
           <ThemedText type="subtitle">Aggiungi a {mealType}</ThemedText>
           <TouchableOpacity onPress={handleDone} disabled={cart.length === 0} style={{ padding: 8 }}>
-            <ThemedText type="link" style={{ color: cart.length > 0 ? KyloPalette.primary : '#333' }}>
+            <ThemedText type="link" style={{ color: cart.length > 0 ? colors.tint : '#333' }}>
               Fatto ({cart.length})
             </ThemedText>
           </TouchableOpacity>
@@ -83,11 +84,11 @@ const SearchFoodScreen = () => {
 
       {/* 2. BARRA DI RICERCA */}
       <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color={KyloPalette.textMuted} style={{ marginRight: 8 }} />
+        <Ionicons name="search" size={20} color={colors.textMuted} style={{ marginRight: 8 }} />
         <TextInput 
           style={styles.input}
           placeholder="Cerca cibo (es. Banana)..."
-          placeholderTextColor={KyloPalette.textMuted}
+          placeholderTextColor={colors.textMuted}
           value={query}
           onChangeText={setQuery}
           autoFocus={true}
@@ -101,13 +102,13 @@ const SearchFoodScreen = () => {
         contentContainerStyle={{ padding: 16 }}
         ListEmptyComponent={
           query.length > 0 ? (
-            <ThemedText style={{ textAlign: 'center', color: KyloPalette.textMuted, marginTop: 20 }}>
+            <ThemedText style={{ textAlign: 'center', color: colors.textMuted, marginTop: 20 }}>
               Nessun risultato trovato.
             </ThemedText>
           ) : (
             <View style={{ alignItems: 'center', marginTop: 40, opacity: 0.5 }}>
-              <Ionicons name="nutrition-outline" size={64} color={KyloPalette.textMuted} />
-              <ThemedText style={{ marginTop: 10, color: KyloPalette.textMuted }}>
+              <Ionicons name="nutrition-outline" size={64} color={colors.textMuted} />
+              <ThemedText style={{ marginTop: 10, color: colors.textMuted }}>
                 Cerca un alimento per iniziare
               </ThemedText>
             </View>
@@ -122,7 +123,7 @@ const SearchFoodScreen = () => {
             >
               <View style={{ flex: 1 }}>
                 <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
-                <ThemedText type="caption" style={{ color: KyloPalette.textMuted }}>
+                <ThemedText type="caption" style={{ color: colors.textMuted }}>
                   {item.cal} kcal • P:{item.p} C:{item.c} F:{item.f}
                 </ThemedText>
               </View>
@@ -140,7 +141,7 @@ const SearchFoodScreen = () => {
       {cart.length > 0 && (
         <View style={styles.floatingCart}>
           <ThemedText type="defaultSemiBold">Hai selezionato {cart.length} alimenti</ThemedText>
-          <ThemedText type="caption" style={{ color: KyloPalette.textMuted }}>
+          <ThemedText type="caption" style={{ color: colors.textMuted }}>
             Totale: {cart.reduce((sum, i) => sum + i.cal, 0)} kcal
           </ThemedText>
         </View>
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: KyloPalette.inputBackground,
+    backgroundColor: Colors.dark.surface,
     margin: 16,
     paddingHorizontal: 12,
     borderRadius: 12,
@@ -172,7 +173,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    color: KyloPalette.text,
+    color: Colors.dark.text,
     fontSize: 16,
     height: '100%',
   },
@@ -180,38 +181,38 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: KyloPalette.surface,
+    backgroundColor: Colors.dark.surface,
     borderRadius: 12,
     marginBottom: 8,
   },
   selectedItem: {
     borderWidth: 1,
-    borderColor: KyloPalette.primary,
+    borderColor: Colors.dark.tint,
   },
   checkbox: {
     width: 24,
     height: 24,
     borderRadius: 12,
     borderWidth: 2,
-    borderColor: KyloPalette.textMuted,
+    borderColor: Colors.dark.textMuted,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 12,
   },
   checkboxSelected: {
-    backgroundColor: KyloPalette.primary,
-    borderColor: KyloPalette.primary,
+    backgroundColor: Colors.dark.tint,
+    borderColor: Colors.dark.tint,
   },
   floatingCart: {
     position: 'absolute',
     bottom: 30,
     left: 20,
     right: 20,
-    backgroundColor: KyloPalette.surface,
+    backgroundColor: Colors.dark.surface,
     padding: 16,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: KyloPalette.primary,
+    borderColor: Colors.dark.tint,
     alignItems: 'center',
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },

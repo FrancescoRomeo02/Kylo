@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabase';
-import { foodLogs } from '@/lib/types';
+import { FoodLog } from '@/lib/types';
 
-export async function getFoodLogsByUserId(userId: string): Promise<foodLogs[]> {
+export async function getFoodLogsByUserId(userId: string): Promise<FoodLog[]> {
   const { data, error } = await supabase
     .from('food_logs')
     .select('*')
@@ -11,10 +11,10 @@ export async function getFoodLogsByUserId(userId: string): Promise<foodLogs[]> {
     throw new Error(error.message);
   }
 
-  return data as foodLogs[];
+  return data as FoodLog[];
 }
 
-export async function insertFoodLog(entry: foodLogs & { user_id: string }): Promise<foodLogs> {
+export async function insertFoodLog(entry: FoodLog & { user_id: string }): Promise<FoodLog> {
   const { data, error } = await supabase
     .from('food_logs')
     .insert(entry)
@@ -25,7 +25,7 @@ export async function insertFoodLog(entry: foodLogs & { user_id: string }): Prom
     throw new Error(error.message);
   }
 
-  return data as foodLogs;
+  return data as FoodLog;
 }
 
 export async function deleteFoodLog(id: string): Promise<void> {

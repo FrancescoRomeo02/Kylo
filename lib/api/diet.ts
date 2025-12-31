@@ -9,7 +9,10 @@ export async function getDietByUserId(userId: string): Promise<Diet | null> {
     .eq('id', userId)
     .single();
 
-  if (error) return null;
+  if (error) {
+    console.error('Error fetching diet:', error);
+    return null;
+  }
   return (data as Diet) ?? null;
 }
 

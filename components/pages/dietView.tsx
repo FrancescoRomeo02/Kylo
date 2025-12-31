@@ -6,12 +6,10 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { Diet } from '@/lib/types';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import MacroProgressCircle from '../ui/macroProgressCircle';
 import MealEntry from '../ui/mealEntry';
-
-
 
 function DietView({ diet }: { diet: Diet }) {
 
@@ -23,7 +21,7 @@ function DietView({ diet }: { diet: Diet }) {
     ] },
     { name: 'Cena', calories: 0, items: [] },
     { name: 'Spuntini', calories: 0, items: [] },
-    ]
+    ];
     const fullName = profile?.full_name ?? 'Atleta';
   
     const accentText = useThemeColor({}, "accent");
@@ -38,11 +36,7 @@ function DietView({ diet }: { diet: Diet }) {
   const [dateList, setDateList] = useState<string[]>([]);
   const scrollRef = useRef<ScrollView>(null);
 
-  useEffect(() => {
-    generateDateList(diet.effective_from);
-  }, [diet.effective_from]);
-
-  function generateDateList(startDate?: string | null) {
+  const generateDateList = useCallback((startDate?: string | null) => {
     const list: string[] = [];
     const start = startDate ? new Date(startDate) : new Date();
     const today = new Date();
@@ -58,9 +52,13 @@ function DietView({ diet }: { diet: Diet }) {
     setSelectedDate(list[list.length - 1]);
 
     setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 80);
-  }
+  }, []);
 
-  const styles = StyleSheet.create({
+  useEffect(() => {
+    generateDateList(diet.effective_from);
+  }, [diet.effective_from, generateDateList]);
+
+  const styles = useMemo(() => StyleSheet.create({
     container: {
       paddingHorizontal: 16,
       paddingVertical: 20,
@@ -124,7 +122,7 @@ function DietView({ diet }: { diet: Diet }) {
       marginTop: 20,
       gap: 12,
     },
-  });
+  }), [colors, isDark]);
 
   const goal = diet.target_calories;
   const remaining = goal - (meal.reduce((sum, m) => sum + m.calories, 0));

@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { getProfileByUserId } from '@/lib/api/profiles';
 import { supabase } from '@/lib/supabase';
@@ -62,6 +63,7 @@ export default function RootLayout() {
   }, [session, initialized, segments]);
 
   return (
+    <ErrorBoundary>
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -80,5 +82,6 @@ export default function RootLayout() {
     </ThemeProvider>
     </BottomSheetModalProvider>
     </GestureHandlerRootView>
+    </ErrorBoundary>
   );
 }

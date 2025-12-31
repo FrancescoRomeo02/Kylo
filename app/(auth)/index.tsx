@@ -18,7 +18,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-export default function AuthGate() {
+export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -175,3 +175,8 @@ const styles = StyleSheet.create({
     gap: 4,
   },
 });
+
+// TODO:
+// - Refactor styles to use useThemeColor where applicable
+// - Ensure accessibility features are in place (e.g., labels for inputs)
+// - BUG: continously load when "Accedi" is pressed with correct credentials

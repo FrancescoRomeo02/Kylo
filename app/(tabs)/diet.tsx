@@ -3,7 +3,7 @@ import DietView from '@/components/pages/dietView';
 import { ThemedText } from '@/components/themed-text';
 import TabScreen from '@/components/ui/tabScreen';
 import TopBar from '@/components/ui/topbar';
-import { getDietByUserId, insertDiet } from '@/lib/api/deiet';
+import { getDietByUserId, insertDiet } from '@/lib/api/diet';
 import { Diet } from '@/lib/types';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useEffect, useState } from 'react';
@@ -25,8 +25,7 @@ export default function DietScreen() {
     }
   }, [userId]);
 
-  const fetchDiet = async () => {
-    try {
+  const fetchDiet = async () => {    if (!userId) return;    try {
       const fetchedDiet = await getDietByUserId(userId);
       setDiet(fetchedDiet);
     } catch (error) {
@@ -36,16 +35,15 @@ export default function DietScreen() {
     }
   };
 
-  const handleSave = async (data: any) => {
+  const handleSave = async (data: Omit<Diet, 'id'>) => {
     if (!userId) return;
     setLoading(true);
-    console.log('Saving diet data:', data);
     try {
       const payload = { id: userId, ...data };
       const savedDiet = await insertDiet(payload);
       setDiet(savedDiet);
     } catch (error) {
-      console.error('Error saving diet:', error);
+      // Handle error silently or show user feedback
     } finally {
       setLoading(false);
     }
