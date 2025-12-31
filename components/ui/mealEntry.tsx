@@ -1,4 +1,6 @@
-import { Colors } from '@/constants/theme';
+import { BorderRadius, Colors, FontSizes, Spacing } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useThemeColor } from '@/hooks/use-theme-color';
 import { useAuthStore } from '@/store/useAuthStore';
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetTextInput, BottomSheetView } from '@gorhom/bottom-sheet';
 import { useRouter } from 'expo-router';
@@ -28,13 +30,68 @@ interface MealEntryProps {
 
 const MealEntry = ({ meal, onUpdateItem }: MealEntryProps) => {
   const profile = useAuthStore((state) => state.profile);
-  const colors = Colors.dark;
+  const colorScheme = useColorScheme();
+  const colors = Colors[colorScheme ?? 'light'];
+  
+  const surfaceColor = useThemeColor({}, 'surface');
+  const backgroundColor = useThemeColor({}, 'background');
+  const textMuted = useThemeColor({}, 'textMuted');
+  const accentColor = useThemeColor({}, 'accent');
+  const tintColor = useThemeColor({}, 'tint');
+  const textColor = useThemeColor({}, 'text');
+  const borderColor = useThemeColor({}, 'border');
 
   const router = useRouter();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['60%'], []);
 
   const [editingItem, setEditingItem] = useState<MealItem | null>(null);
+
+  const styles = useMemo(() => StyleSheet.create({
+    mealSection: { marginBottom: Spacing.lg, paddingHorizontal: Spacing.xs },
+    headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: Spacing.md },
+    card: { flexDirection: 'row', alignItems: 'center', backgroundColor: surfaceColor, borderRadius: BorderRadius.lg, padding: Spacing.md, marginBottom: Spacing.md },
+    iconContainer: { width: 48, height: 48, backgroundColor: backgroundColor, borderRadius: BorderRadius.md, justifyContent: 'center', alignItems: 'center', marginRight: Spacing.md, borderWidth: 1, borderColor: borderColor },
+    textContainer: { flex: 1 },
+    smallAddButton: { padding: Spacing.xs, opacity: 0.7 },
+    emptyStateContainer: { height: 100, borderRadius: BorderRadius.lg, borderWidth: 2, borderColor: surfaceColor, borderStyle: 'dashed', justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' },
+    addMoreButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: surfaceColor, borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: Spacing.sm, gap: Spacing.sm, opacity: 0.8 },
+    
+    sheetContent: {
+      flex: 1,
+      padding: Spacing.lg,
+      backgroundColor: surfaceColor,
+    },
+    inputRow: {
+      flexDirection: 'row',
+      gap: Spacing.md,
+      marginBottom: Spacing.md,
+    },
+    inputContainer: {
+      flex: 1,
+    },
+    label: {
+      color: textMuted,
+      marginBottom: Spacing.sm,
+      marginLeft: Spacing.xs,
+    },
+    input: {
+      backgroundColor: surfaceColor,
+      color: textColor,
+      borderRadius: BorderRadius.md,
+      paddingHorizontal: Spacing.md,
+      paddingVertical: Spacing.md,
+      fontSize: FontSizes.base,
+      height: 50, 
+    },
+    saveButton: {
+      backgroundColor: tintColor,
+      borderRadius: BorderRadius.md,
+      paddingVertical: Spacing.md,
+      alignItems: 'center',
+      marginTop: Spacing.lg,
+    }
+  }), [surfaceColor, backgroundColor, textMuted, accentColor, tintColor, textColor, borderColor]);
 
   const handlePresentModalPress = useCallback((item: MealItem) => {
     setEditingItem({ ...item }); 
@@ -83,7 +140,7 @@ const MealEntry = ({ meal, onUpdateItem }: MealEntryProps) => {
       {/* Header */}
       <View style={styles.headerRow}>
         <ThemedText type="subtitle">{meal.name}</ThemedText>
-        <ThemedText type="default" style={{ color: colors.textMuted }}>
+        <ThemedText type="default" style={{ color: textMuted }}>
           {meal.calories} kcal
         </ThemedText>
       </View>
@@ -94,10 +151,10 @@ const MealEntry = ({ meal, onUpdateItem }: MealEntryProps) => {
           style={styles.emptyStateContainer}
           onPress={() => router.push({ pathname: '/searchFood', params: { mealType: meal.name, userId: profile?.id || '' } })}
         >
-          <View style={{ marginBottom: 8 }}>
-            <IconSymbol name="plus.circle.fill" size={32} color={colors.textMuted} />
+          <View style={{ marginBottom: Spacing.sm }}>
+            <IconSymbol name="plus.circle.fill" size={32} color={textMuted} />
           </View>
-          <ThemedText type="default" style={{ color: colors.textMuted }}>
+          <ThemedText type="default" style={{ color: textMuted }}>
             Log your {meal.name.toLowerCase()}
           </ThemedText>
         </TouchableOpacity>
@@ -106,12 +163,12 @@ const MealEntry = ({ meal, onUpdateItem }: MealEntryProps) => {
           {meal.items.map((item, index) => (
             <View key={item.id || `${item.name}-${index}`} style={styles.card}>
               <View style={styles.iconContainer}>
-                <IconSymbol name={itemIcon(item)} size={24} color={colors.accent}/>
+                <IconSymbol name={itemIcon(item)} size={24} color={accentColor}/>
               </View>
 
               <View style={styles.textContainer}>
                 <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
-                <ThemedText type="caption" style={{ color: colors.textMuted }}>
+                <ThemedText type="caption" style={{ color: textMuted }}>
                    {item.quantity ? item.quantity + ' • ' : ''}{item.calories} kcal
                 </ThemedText>
               </View>
@@ -121,7 +178,7 @@ const MealEntry = ({ meal, onUpdateItem }: MealEntryProps) => {
                 style={styles.smallAddButton}
                 onPress={() => handlePresentModalPress(item)}
               >
-                <IconSymbol name="slider.horizontal.3" size={24} color={colors.textMuted} />
+                <IconSymbol name="slider.horizontal.3" size={24} color={textMuted} />
               </TouchableOpacity>
             </View>
           ))}
@@ -131,7 +188,7 @@ const MealEntry = ({ meal, onUpdateItem }: MealEntryProps) => {
             style={styles.addMoreButton}
             onPress={() => router.push({ pathname: '/searchFood', params: { mealType: meal.name, userId: profile?.id || '' } })}
           >
-            <IconSymbol name="plus.circle.fill" size={24} color={colors.textMuted} />
+            <IconSymbol name="plus.circle.fill" size={24} color={textMuted} />
           </TouchableOpacity>
         </>
       )}
@@ -142,14 +199,14 @@ const MealEntry = ({ meal, onUpdateItem }: MealEntryProps) => {
         index={0}
         snapPoints={snapPoints}
         backdropComponent={renderBackdrop}
-        backgroundStyle={{ backgroundColor: colors.surface }}
-        handleIndicatorStyle={{ backgroundColor: colors.textMuted }}
+        backgroundStyle={{ backgroundColor: surfaceColor }}
+        handleIndicatorStyle={{ backgroundColor: textMuted }}
         keyboardBlurBehavior="restore"
       >
         <BottomSheetView style={styles.sheetContent}>
           {editingItem && (
             <>
-              <ThemedText type="subtitle" style={{textAlign: 'center', marginBottom: 20}}>
+              <ThemedText type="subtitle" style={{textAlign: 'center', marginBottom: Spacing.lg}}>
                 Modifica {editingItem.name}
               </ThemedText>
 
@@ -161,7 +218,7 @@ const MealEntry = ({ meal, onUpdateItem }: MealEntryProps) => {
                     style={styles.input} 
                     value={editingItem.name}
                     onChangeText={(t) => handleChange('name', t)}
-                    placeholderTextColor={colors.textMuted}
+                    placeholderTextColor={textMuted}
                   />
                 </View>
                 <View style={[styles.inputContainer, { flex: 1 }]}>
@@ -171,7 +228,7 @@ const MealEntry = ({ meal, onUpdateItem }: MealEntryProps) => {
                     value={String(editingItem.calories)}
                     keyboardType="numeric"
                     onChangeText={(t) => handleChange('calories', t)}
-                    placeholderTextColor={colors.textMuted}
+                    placeholderTextColor={textMuted}
                   />
                 </View>
               </View>
@@ -184,7 +241,7 @@ const MealEntry = ({ meal, onUpdateItem }: MealEntryProps) => {
                     value={String(editingItem.protein)}
                     keyboardType="numeric"
                     onChangeText={(t) => handleChange('protein', t)}
-                    placeholderTextColor={colors.textMuted}
+                    placeholderTextColor={textMuted}
                   />
                 </View>
                 <View style={styles.inputContainer}>
@@ -194,7 +251,7 @@ const MealEntry = ({ meal, onUpdateItem }: MealEntryProps) => {
                     value={String(editingItem.carbs)}
                     keyboardType="numeric"
                     onChangeText={(t) => handleChange('carbs', t)}
-                    placeholderTextColor={colors.textMuted}
+                    placeholderTextColor={textMuted}
                   />
                 </View>
                 <View style={styles.inputContainer}>
@@ -204,14 +261,14 @@ const MealEntry = ({ meal, onUpdateItem }: MealEntryProps) => {
                     value={String(editingItem.fats)}
                     keyboardType="numeric"
                     onChangeText={(t) => handleChange('fats', t)}
-                    placeholderTextColor={colors.textMuted}
+                    placeholderTextColor={textMuted}
                   />
                 </View>
               </View>
 
               {/* Save Button */}
               <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-                <ThemedText type="defaultSemiBold" style={{color: colors.text}}>
+                <ThemedText type="defaultSemiBold" style={{color: textColor}}>
                   Salva Modifiche
                 </ThemedText>
               </TouchableOpacity>
@@ -222,51 +279,5 @@ const MealEntry = ({ meal, onUpdateItem }: MealEntryProps) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  mealSection: { marginBottom: 24, paddingHorizontal: 4 },
-  headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
-  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.dark.surface, borderRadius: 16, padding: 16, marginBottom: 12 },
-  iconContainer: { width: 48, height: 48, backgroundColor: Colors.dark.background, borderRadius: 12, justifyContent: 'center', alignItems: 'center', marginRight: 16, borderWidth: 1, borderColor: '#ffffff10' },
-  textContainer: { flex: 1 },
-  smallAddButton: { padding: 4, opacity: 0.7 },
-  emptyStateContainer: { height: 100, borderRadius: 16, borderWidth: 2, borderColor: Colors.dark.surface, borderStyle: 'dashed', justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' },
-  addMoreButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: Colors.dark.surface, borderRadius: 12, padding: 12, marginTop: 8, gap: 8, opacity: 0.8 },
-  
-  sheetContent: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: Colors.dark.surface,
-  },
-  inputRow: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 16,
-  },
-  inputContainer: {
-    flex: 1,
-  },
-  label: {
-    color: Colors.dark.textMuted,
-    marginBottom: 6,
-    marginLeft: 4,
-  },
-  input: {
-    backgroundColor: Colors.dark.surface,
-    color: Colors.dark.text,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
-    height: 50, 
-  },
-  saveButton: {
-    backgroundColor: Colors.dark.tint,
-    borderRadius: 12,
-    paddingVertical: 16,
-    alignItems: 'center',
-    marginTop: 24,
-  }
-});
 
 export default MealEntry;

@@ -2,7 +2,7 @@ import { ThemedText } from '@/components/themed-text';
 import MacroCard from '@/components/ui/macrocards';
 import TabScreen from '@/components/ui/tabScreen';
 import TopBar from '@/components/ui/topbar';
-import { Colors } from '@/constants/theme';
+import { BorderRadius, Colors, FontSizes, MacroColors, Spacing } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -31,7 +31,12 @@ function DietSetup({ onSave }: { onSave: (data: any) => void }) {
 
   const textMuted = useThemeColor({}, 'textMuted');
   const surfaceColor = useThemeColor({}, 'surface');
-  
+  const surfaceAlt = useThemeColor({}, 'surfaceAlt');
+  const border = useThemeColor({}, 'border');
+  const buttonText = useThemeColor({}, 'buttonText');
+  const buttonDisabled = useThemeColor({}, 'buttonDisabled');
+  const infoBackground = useThemeColor({}, 'infoBackground');
+  const infoText = useThemeColor({}, 'infoText');
 
   useEffect(() => {
     const preset = DIET_PRESETS[dietType];
@@ -42,90 +47,90 @@ function DietSetup({ onSave }: { onSave: (data: any) => void }) {
 
   const styles = StyleSheet.create({
     container: {
-      paddingHorizontal: 16,
-      paddingVertical: 20,
+      paddingHorizontal: Spacing.md,
+      paddingVertical: Spacing.lg,
     },
     header: {
-      fontSize: 24,
+      fontSize: FontSizes.xxl,
       fontWeight: 'bold',
-      marginBottom: 24,
+      marginBottom: Spacing.lg,
       color: colors.text,
     },
     card: {
-      backgroundColor: isDark ? '#1a1a2e' : '#f5f5f5',
-      borderRadius: 12,
-      padding: 16,
-      marginBottom: 20,
+      backgroundColor: surfaceAlt,
+      borderRadius: BorderRadius.md,
+      padding: Spacing.md,
+      marginBottom: Spacing.lg,
       borderWidth: 1,
-      borderColor: isDark ? '#333' : '#e0e0e0',
+      borderColor: border,
     },
     label: {
-      fontSize: 12,
-      color: '#888',
+      fontSize: FontSizes.sm,
+      color: textMuted,
       textTransform: 'uppercase',
-      marginBottom: 8,
+      marginBottom: Spacing.sm,
       letterSpacing: 1,
     },
     input: {
       fontSize: 64,
       fontWeight: 'bold',
       color: colors.text,
-      marginBottom: 8,
+      marginBottom: Spacing.sm,
     },
     unit: {
-      fontSize: 14,
-      color: '#888',
+      fontSize: FontSizes.md,
+      color: textMuted,
     },
     sectionTitle: {
-      fontSize: 16,
+      fontSize: FontSizes.base,
       fontWeight: '600',
       color: colors.text,
-      marginBottom: 12,
+      marginBottom: Spacing.md,
     },
     dietTypeContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      gap: 8,
-      marginBottom: 20,
+      gap: Spacing.sm,
+      marginBottom: Spacing.lg,
     },
     dietButton: {
-      paddingHorizontal: 8,
-      paddingVertical: 8,
-      borderRadius: 20,
+      paddingHorizontal: Spacing.sm,
+      paddingVertical: Spacing.sm,
+      borderRadius: BorderRadius.xl,
       borderWidth: 1,
-      borderColor: '#666',
+      borderColor: border,
     },
     dietButtonActive: {
       backgroundColor: colors.tint,
       borderColor: colors.tint,
     },
     dietButtonText: {
-      color: '#999',
-      fontSize: 14,
+      color: textMuted,
+      fontSize: FontSizes.md,
       fontWeight: '500',
     },
     dietButtonActiveText: {
-      color: '#fff',
+      color: buttonText,
     },
     macroItem: {
-      marginBottom: 12,
+      marginBottom: Spacing.md,
     },
     macroLabel: {
-      fontSize: 14,
+      fontSize: FontSizes.md,
       fontWeight: '600',
-      marginBottom: 4,
+      marginBottom: Spacing.xs,
       color: colors.text,
     },
     macroValue: {
-      fontSize: 12,
-      color: '#888',
+      fontSize: FontSizes.sm,
+      color: textMuted,
     },
     slider: {
       height: 6,
-      backgroundColor: '#333',
+      backgroundColor: surfaceColor,
       borderRadius: 3,
       overflow: 'hidden',
-      marginTop: 8,
+      marginTop: Spacing.sm,
     },
     sliderFill: {
       height: '100%',
@@ -134,21 +139,21 @@ function DietSetup({ onSave }: { onSave: (data: any) => void }) {
     saveButton: {
       backgroundColor: colors.tint,
       paddingVertical: 14,
-      borderRadius: 12,
+      borderRadius: BorderRadius.md,
       alignItems: 'center',
-      marginTop: 20,
+      marginTop: Spacing.lg,
     },
     saveButtonDisabled: {
-      backgroundColor: '#ccc',
+      backgroundColor: buttonDisabled,
       paddingVertical: 14,
-      borderRadius: 12,
+      borderRadius: BorderRadius.md,
       alignItems: 'center',
-      marginTop: 20,
+      marginTop: Spacing.lg,
     },
     saveButtonText: {
-      color: '#fff',
+      color: buttonText,
       fontWeight: '600',
-      fontSize: 16,
+      fontSize: FontSizes.base,
     },
   });
 
@@ -166,11 +171,7 @@ function DietSetup({ onSave }: { onSave: (data: any) => void }) {
     });
   };
 
-  const macroColors = {
-    protein: '#a855f7',
-    carbs: '#06b6d4',
-    fats: '#f87171',
-  };
+  const macroColors = MacroColors;
 
   return (
     <TabScreen renderHeader={<TopBar onPress={() => {}} fullName={fullName} />}>
@@ -224,10 +225,10 @@ function DietSetup({ onSave }: { onSave: (data: any) => void }) {
           </ThemedText>
           </View>
         </View>
-        <View style={{ height: 18, flexDirection: 'row', width: '100%', marginTop: 8, borderRadius: 6, overflow: 'hidden' }}>
-          <View style={{ flex: protein, backgroundColor: macroColors.protein }} />
-          <View style={{ flex: carbs, backgroundColor: macroColors.carbs }} />
-          <View style={{ flex: fats, backgroundColor: macroColors.fats }} />
+        <View style={{ height: 18, flexDirection: 'row', width: '100%', marginTop: Spacing.sm, borderRadius: BorderRadius.sm, overflow: 'hidden' }}>
+          <View style={{ flex: protein, backgroundColor: MacroColors.protein }} />
+          <View style={{ flex: carbs, backgroundColor: MacroColors.carbs }} />
+          <View style={{ flex: fats, backgroundColor: MacroColors.fats }} />
         </View>
 
 
@@ -260,14 +261,14 @@ function DietSetup({ onSave }: { onSave: (data: any) => void }) {
 
         <View
           style={{
-            backgroundColor: isDark ? '#1a2555' : '#dbeafe',
-            borderRadius: 8,
-            padding: 12,
-            marginTop: 16,
-            marginBottom: 20,
+            backgroundColor: infoBackground,
+            borderRadius: BorderRadius.sm,
+            padding: Spacing.md,
+            marginTop: Spacing.md,
+            marginBottom: Spacing.lg,
           }}
         >
-          <ThemedText style={{ fontSize: 12, color: isDark ? '#60a5fa' : '#0369a1' }}>
+          <ThemedText style={{ fontSize: FontSizes.sm, color: infoText }}>
             💡 Adjust sliders to change your ratio. The values in grams are automatically calculated based on
             your total calorie target.
           </ThemedText>

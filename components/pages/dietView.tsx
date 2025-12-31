@@ -1,7 +1,7 @@
 import { ThemedText } from '@/components/themed-text';
 import TabScreen from '@/components/ui/tabScreen';
 import TopBar from '@/components/ui/topbar';
-import { Colors } from '@/constants/theme';
+import { BorderRadius, Colors, FontSizes, MacroColors, Spacing } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { Diet } from '@/lib/types';
@@ -26,7 +26,10 @@ function DietView({ diet }: { diet: Diet }) {
   
     const accentText = useThemeColor({}, "accent");
     const mutedText = useThemeColor({}, "textMuted");
-    
+  const surfaceColor = useThemeColor({}, "surface");
+  const surfaceAlt = useThemeColor({}, "surfaceAlt");
+  const border = useThemeColor({}, "border");
+  const tintColor = useThemeColor({}, "tint");
 
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
@@ -60,38 +63,38 @@ function DietView({ diet }: { diet: Diet }) {
 
   const styles = useMemo(() => StyleSheet.create({
     container: {
-      paddingHorizontal: 8,
-      paddingVertical: 10,
+      paddingHorizontal: Spacing.sm,
+      paddingVertical: Spacing.sm,
     },
     header: {
-      fontSize: 24,
+      fontSize: FontSizes.xxl,
       fontWeight: 'bold',
-      marginBottom: 20,
+      marginBottom: Spacing.lg,
       color: colors.text,
     },
     dateSelector: {
       flexDirection: 'row',
-      marginBottom: 12,
+      marginBottom: Spacing.md,
     },
     dateButton: {
-      padding: 10,
-      borderRadius: 8,
-      backgroundColor: isDark ? '#333' : '#eee',
-      marginRight: 8,
+      padding: Spacing.sm,
+      borderRadius: BorderRadius.sm,
+      backgroundColor: surfaceAlt,
+      marginRight: Spacing.sm,
     },
     dateButtonActive: {
-      backgroundColor: colors.tint,
+      backgroundColor: tintColor,
     },
     dateButtonText: {
-      color: isDark ? '#fff' : '#000',
+      color: colors.text,
     },
     card: {
-      backgroundColor: isDark ? '#12121a' : '#ffffff',
-      borderRadius: 14,
-      padding: 20,
-      marginBottom: 20,
+      backgroundColor: surfaceColor,
+      borderRadius: BorderRadius.lg,
+      padding: Spacing.lg,
+      marginBottom: Spacing.lg,
       borderWidth: 1,
-      borderColor: isDark ? '#222' : '#e6e9ee',
+      borderColor: border,
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 0.06,
@@ -100,29 +103,29 @@ function DietView({ diet }: { diet: Diet }) {
     },
     progressBar: {
       height: 8,
-      backgroundColor: "#7C3AED" + '30',
+      backgroundColor: 'rgba(124, 58, 237, 0.3)',
       borderRadius: 4,
       overflow: 'hidden',
-      marginBottom: 12,
+      marginBottom: Spacing.md,
     },
     progressFill: {
       height: '100%',
-      backgroundColor: colors.tint,
+      backgroundColor: tintColor,
       borderRadius: 4,
     },
     calorieStats: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      fontSize: 12,
-      color: '#888',
+      fontSize: FontSizes.sm,
+      color: mutedText,
     },
     macroCircles: {
       flexDirection: 'row',
       justifyContent: 'space-around',
-      marginTop: 20,
-      gap: 12,
+      marginTop: Spacing.lg,
+      gap: Spacing.md,
     },
-  }), [colors, isDark]);
+  }), [colors, surfaceColor, surfaceAlt, border, tintColor, mutedText]);
 
   const goal = diet.target_calories;
   const remaining = goal - (meal.reduce((sum, m) => sum + m.calories, 0));
@@ -178,7 +181,7 @@ function DietView({ diet }: { diet: Diet }) {
         </ScrollView>
 
           {/* Selected date label */}
-          <ThemedText style={{ fontSize: 14, color: colors.text, marginBottom: 12, textAlign: 'center' }}>
+          <ThemedText style={{ fontSize: FontSizes.md, color: colors.text, marginBottom: Spacing.md, textAlign: 'center' }}>
             {selectedDate ? new Date(selectedDate).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) : ''}
           </ThemedText>
 
@@ -207,19 +210,19 @@ function DietView({ diet }: { diet: Diet }) {
             <MacroProgressCircle
               value={todayProtein}
               target={diet.target_protein ?? 0}
-              color="#4CAF50"
+              color={MacroColors.protein}
               label="Proteine"
             />
             <MacroProgressCircle
               value={todayCarbs}
               target={diet.target_carbs ?? 0}
-              color="#2196F3"
+              color={MacroColors.carbs}
               label="Carboidrati"
             />
             <MacroProgressCircle
               value={todayFats}
               target={diet.target_fats ?? 0}
-              color="#FF9800"
+              color={MacroColors.fats}
               label="Grassi"
             />
           </View>

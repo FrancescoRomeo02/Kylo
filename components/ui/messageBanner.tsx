@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import { BorderRadius, FontSizes, Spacing } from '@/constants/theme';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
 type BannerType = 'info' | 'error' | 'success';
@@ -41,20 +42,20 @@ const MessageBanner: React.FC<MessageBannerProps> = ({ message, type = 'info', o
 const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
-    borderRadius: 12,
-    padding: 12,
+    borderRadius: BorderRadius.md,
+    padding: Spacing.md,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 12,
+    marginBottom: Spacing.md,
   },
   text: {
     flex: 1,
-    fontSize: 14,
+    fontSize: FontSizes.md,
   },
   close: {
-    fontSize: 14,
-    marginLeft: 12,
+    fontSize: FontSizes.md,
+    marginLeft: Spacing.md,
   },
 });
 

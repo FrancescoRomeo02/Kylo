@@ -1,4 +1,5 @@
 
+import { BorderRadius, FontSizes, Spacing } from '@/constants/theme';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import Slider from '@react-native-community/slider';
 import React from 'react';
@@ -17,6 +18,7 @@ interface MacroCardProps {
 
 const MacroCard: React.FC<MacroCardProps> = ({ammount, dailyTarget, macroName, macroColors, setMacro, isDark }) => {
       const surfaceColor = useThemeColor({}, 'surface');
+      const surfaceAlt = useThemeColor({}, 'surfaceAlt');
       const textMuted = useThemeColor({}, 'textMuted');
 
       const kcalFactor = macroName === 'Proteine' || macroName === 'Carboidrati' ? 4 : 9;
@@ -24,17 +26,17 @@ const MacroCard: React.FC<MacroCardProps> = ({ammount, dailyTarget, macroName, m
     
     return (
         <View style={[styles.macroItem, { backgroundColor: surfaceColor }]}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-                    <View style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: macroColors + '33', justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: Spacing.sm }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: Spacing.md }}>
+                    <View style={{ width: 32, height: 32, borderRadius: BorderRadius.lg, backgroundColor: macroColors + '33', justifyContent: 'center', alignItems: 'center' }}>
                     <IconSymbol name={iconName} size={24} color={macroColors} />
                     </View>
                     <View style={{ flexDirection: 'column' }}>
                         <ThemedText type='subtitle'>{macroName}</ThemedText>
-                        <ThemedText style={[styles.macroValue, { marginTop: 4 }]}>{kcalFactor} kcal/g</ThemedText>
+                        <ThemedText style={[styles.macroValue, { marginTop: Spacing.xs }]}>{kcalFactor} kcal/g</ThemedText>
                     </View>
                 </View>
-                <View style={{ flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                <View style={{ flexDirection: 'column', alignItems: 'center', gap: Spacing.sm }}>
                     <ThemedText type='subtitle' style={{ color: macroColors }}>
                         {Math.round((ammount / 100) * parseInt(dailyTarget)/kcalFactor)}g
                     </ThemedText>
@@ -52,7 +54,7 @@ const MacroCard: React.FC<MacroCardProps> = ({ammount, dailyTarget, macroName, m
                 value={ammount}
                 onValueChange={setMacro}
                 minimumTrackTintColor={macroColors}
-                maximumTrackTintColor={isDark ? '#333' : '#ddd'}
+                maximumTrackTintColor={surfaceAlt}
                 thumbTintColor={macroColors}
             />
         </View>
@@ -62,10 +64,10 @@ const MacroCard: React.FC<MacroCardProps> = ({ammount, dailyTarget, macroName, m
 const styles = StyleSheet.create({
     macroItem: {
         width: '100%',
-        marginTop: 24,
-        borderRadius: 24,
-        padding: 20,
-        gap: 6,
+        marginTop: Spacing.lg,
+        borderRadius: BorderRadius.lg,
+        padding: Spacing.lg,
+        gap: Spacing.sm,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 8 },
         shadowOpacity: 0.25,
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
         elevation: 8,
     },
     macroValue: {
-        fontSize: 12,
+        fontSize: FontSizes.sm,
         opacity: 0.7,
     },
 });

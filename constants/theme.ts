@@ -12,6 +12,44 @@ const KyloPalette = {
   textMuted: '#9BA1A6',  // Gray Text
 };
 
+// Macro nutrient colors (consistent across the app)
+export const MacroColors = {
+  protein: '#a855f7',   
+  carbs: '#d4a006ff',      
+  fats: '#06b6d4',       
+};
+
+// Spacing scale (4px base unit)
+export const Spacing = {
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
+  xxl: 48,
+};
+
+// Font sizes
+export const FontSizes = {
+  xs: 11,
+  sm: 12,
+  md: 14,
+  base: 16,
+  lg: 18,
+  xl: 20,
+  xxl: 24,
+  xxxl: 32,
+};
+
+// Border radii
+export const BorderRadius = {
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 20,
+  full: 9999,
+};
+
 export const Colors = {
   light: {
     text: '#11181C',
@@ -22,10 +60,22 @@ export const Colors = {
     tabIconDefault: '#687076',
     tabIconSelected: KyloPalette.primary,
 
-    surface: KyloPalette.surface,
+    surface: '#F5F5F5',
+    surfaceAlt: '#E0E0E0',
+    border: 'rgba(0, 0, 0, 0.1)',
+    borderLight: 'rgba(0, 0, 0, 0.05)',
     accent: KyloPalette.accent,
     error: KyloPalette.error,
     warning: KyloPalette.warning,
+    
+    // Button colors
+    buttonText: '#FFFFFF',
+    buttonDisabled: '#CCCCCC',
+    
+    // Info box colors
+    infoBackground: '#DBEAFE',
+    infoText: '#0369A1',
+    infoBorder: '#60A5FA',
   },
   dark: {
     text: KyloPalette.text,
@@ -37,9 +87,21 @@ export const Colors = {
     tabIconSelected: KyloPalette.primary,
     
     surface: KyloPalette.surface,
+    surfaceAlt: '#12121A',
+    border: 'rgba(255, 255, 255, 0.1)',
+    borderLight: 'rgba(255, 255, 255, 0.05)',
     accent: KyloPalette.accent,
     error: KyloPalette.error,
     warning: KyloPalette.warning,
+    
+    // Button colors
+    buttonText: '#FFFFFF',
+    buttonDisabled: '#333333',
+    
+    // Info box colors
+    infoBackground: '#1A2555',
+    infoText: '#60A5FA',
+    infoBorder: '#60A5FA',
   },
 };
 

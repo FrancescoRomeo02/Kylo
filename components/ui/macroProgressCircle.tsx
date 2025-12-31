@@ -1,4 +1,6 @@
 import { ThemedText } from '@/components/themed-text';
+import { FontSizes, Spacing } from '@/constants/theme';
+import { useThemeColor } from '@/hooks/use-theme-color';
 import React from 'react';
 import { View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
@@ -11,6 +13,8 @@ interface MacroProgressCircleProps {
 }
 
 const MacroProgressCircle = ({ value, target, color, label }: MacroProgressCircleProps) => {
+  const textMuted = useThemeColor({}, 'textMuted');
+  
   const size = 80;
   const strokeWidth = 12;
   const radius = (size - strokeWidth) / 2;
@@ -58,7 +62,7 @@ const MacroProgressCircle = ({ value, target, color, label }: MacroProgressCircl
       </View>
       
       {/* Etichetta sotto il cerchio */}
-      <ThemedText style={{ fontSize: 12, color: '#888', marginTop: 8 }}>
+      <ThemedText style={{ fontSize: FontSizes.sm, color: textMuted, marginTop: Spacing.sm }}>
         {label}
       </ThemedText>
     </View>

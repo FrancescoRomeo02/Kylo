@@ -1,6 +1,7 @@
 import React from 'react';
 import { KeyboardTypeOptions, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
+import { BorderRadius, FontSizes, Spacing } from '@/constants/theme';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
 interface FormInputProps {
@@ -80,29 +81,29 @@ const FormInput: React.FC<FormInputProps> = ({
 const styles = StyleSheet.create({
   input: {
     height: 56,
-    paddingHorizontal: 16,
-    borderRadius: 22,
-    fontSize: 16,
-    marginBottom: 4,
+    paddingHorizontal: Spacing.md,
+    borderRadius: BorderRadius.xl,
+    fontSize: FontSizes.base,
+    marginBottom: Spacing.xs,
     borderWidth: 0.7,
   },
 
   label: {
-    fontSize: 14,
-    marginBottom: 4,
+    fontSize: FontSizes.md,
+    marginBottom: Spacing.xs,
   },
 
   footer: {
-    fontSize: 12,
+    fontSize: FontSizes.sm,
     textAlign: 'right',
-    marginTop: 4,
-    marginBottom: 12,
+    marginTop: Spacing.xs,
+    marginBottom: Spacing.md,
   },
 
   validation: {
-    fontSize: 12,
-    marginTop: 4,
-    marginBottom: 12,
+    fontSize: FontSizes.sm,
+    marginTop: Spacing.xs,
+    marginBottom: Spacing.md,
   },
 });
 export default FormInput;

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import { BorderRadius, FontSizes, Spacing } from '@/constants/theme';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost';
@@ -26,6 +27,8 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 }) => {
     const tint = useThemeColor({}, 'tint');
     const surface = useThemeColor({}, 'surface');
+    const buttonText = useThemeColor({}, 'buttonText');
+    const buttonDisabled = useThemeColor({}, 'buttonDisabled');
 
     const { backgroundColor, contentColor, shadowColor, borderColor } = useMemo(() => {
         switch (variant) {
@@ -46,12 +49,12 @@ const CustomButton: React.FC<CustomButtonProps> = ({
             default:
                 return {
                     backgroundColor: primaryColorOverride ?? tint,
-                    contentColor: '#fff',
+                    contentColor: buttonText,
                     shadowColor: primaryColorOverride ?? tint,
                     borderColor: primaryColorOverride ?? tint,
                 };
         }
-    }, [primaryColorOverride, surface, tint, variant]);
+    }, [primaryColorOverride, surface, tint, variant, buttonText]);
 
     const isDisabled = disabled || loading;
 
@@ -82,11 +85,10 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 const styles = StyleSheet.create({
     CustomButtonPrimary: {
         height: 56,
-        borderRadius: 99,
+        borderRadius: BorderRadius.full,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 8,
-        shadowColor: '#7C3AED',
+        marginTop: Spacing.sm,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 8,
@@ -98,17 +100,15 @@ const styles = StyleSheet.create({
         elevation: 0,
     },
     CustomButtonText: {
-        color: '#fff',
-        fontSize: 16,
+        fontSize: FontSizes.base,
         fontWeight: '600',
     },
     Row: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 8,
+        gap: Spacing.sm,
     },
     Disabled: {
-        backgroundColor: '#0F0E17',
         shadowOpacity: 0,
         elevation: 0,
         opacity: 0.6,
